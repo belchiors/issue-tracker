@@ -11,6 +11,7 @@ namespace Domain.Entities
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? Email { get; set; }
-        public IEnumerable<Issue> Issues { get; set; } = new List<Issue>();
+        public IEnumerable<Issue> AssignedIssues { get; set; }
+        public IEnumerable<Issue> Issues { get; set; }
     }
 }

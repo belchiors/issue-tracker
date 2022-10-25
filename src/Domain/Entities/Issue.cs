@@ -20,7 +20,7 @@ namespace Domain.Entities
         public int ProjectId { get; set; }
         [Required]
         public Project? Project { get; set; }
-        public IEnumerable<User>? Assignees { get; set; } = new List<User>();
+        public IEnumerable<User>? Assignees { get; set; }
         public IEnumerable<Label>? Labels { get; set; }
         public IssuePriority Priority { get; set; } = IssuePriority.None;
         public IssueStatus? Status { get; set; } = IssueStatus.Open;
