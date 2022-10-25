@@ -1,12 +1,23 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Infrastructure;
+using System.Data.Common;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection"); ;
+
+if (builder.Environment.IsProduction())
+    connectionString = Environment.GetEnvironmentVariable("DATABASE_URL")!;
+
+builder.Services.AddDbContext(connectionString);
 
 var app = builder.Build();
 
