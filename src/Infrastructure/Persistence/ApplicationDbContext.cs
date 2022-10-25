@@ -19,7 +19,24 @@ namespace Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+            modelBuilder.Entity<Issue>()
+                .HasOne<User>(issue => issue.User)
+                .WithMany(user => user.Issues)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasForeignKey(issue => issue.UserId);
+
+            modelBuilder.Entity<User>()
+                .HasMany<Issue>(user => user.AssignedIssues)
+                .WithMany(issue => issue.Assignees);
+
+            modelBuilder.Entity<Issue>()
+                .HasMany<Label>(issue => issue.Labels)
+                .WithMany(label => label.Issues);
+
+            modelBuilder.Entity<Project>()
+                .HasMany<Issue>(project => project.Issues)
+                .WithOne(issue => issue.Project)
+                .HasForeignKey(issue => issue.ProjectId);
         }
     }
 }
