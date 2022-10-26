@@ -2,10 +2,7 @@
 
 public enum IssuePriority
 {
-    None,
-    Low,
-    Medium,
-    High,
+    Normal,
     Critical,
     Major
 }

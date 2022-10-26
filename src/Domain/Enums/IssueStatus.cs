@@ -11,10 +11,6 @@ namespace Domain.Enums
     {
         Open,
         Fixed,
-        Closed,
-        Review,
-
-        [EnumMember(Value = "In Progress")]
-        InProgress
+        Closed
     }
 }
