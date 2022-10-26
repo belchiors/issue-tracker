@@ -12,18 +12,16 @@ namespace Domain.Entities
     public class Issue
     {
         public int Id { get; set; }
-        public string? Title { get; set; }
-        public string? Description { get; set; }
-        public int UserId { get; set; }
-        [Required]
-        public User? User { get; set; }
-        public int ProjectId { get; set; }
-        [Required]
-        public Project? Project { get; set; }
-        public IEnumerable<User>? Assignees { get; set; }
-        public IEnumerable<Label>? Labels { get; set; }
-        public IssuePriority Priority { get; set; } = IssuePriority.None;
-        public IssueStatus? Status { get; set; } = IssueStatus.Open;
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public IssuePriority Priority { get; set; }
+        public IssueStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public int UserId { get; set; }
+        public int ProjectId { get; set; }
+        public virtual User User { get; set; }
+        public virtual Project Project { get; set; }
+        public virtual IEnumerable<User>? Assignees { get; set; }
     }
 }

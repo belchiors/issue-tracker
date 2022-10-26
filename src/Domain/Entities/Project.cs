@@ -9,9 +9,7 @@ namespace Domain.Entities
     public class Project
     {
         public int Id { get; set; }
-        public string? Name { get; set; }
-        public string? Description { get; set; }
-
-        public IEnumerable<Issue> Issues { get; set; } = new List<Issue>();
+        public string Name { get; set; }
+        public virtual IEnumerable<Issue>? Issues { get; set; } = Enumerable.Empty<Issue>();
     }
 }
