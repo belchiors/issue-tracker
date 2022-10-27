@@ -11,11 +11,11 @@ namespace Infrastructure.Persistence
     public class ApplicationDbContext : DbContext
     {
         public DbSet<Issue> Issues { get; set; }
-        public DbSet<Label> Labels { get; set; }  
         public DbSet<Project> Projects { get; set; }
         public DbSet<User> Users { get; set; }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,10 +28,6 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<User>()
                 .HasMany<Issue>(user => user.AssignedIssues)
                 .WithMany(issue => issue.Assignees);
-
-            modelBuilder.Entity<Issue>()
-                .HasMany<Label>(issue => issue.Labels)
-                .WithMany(label => label.Issues);
 
             modelBuilder.Entity<Project>()
                 .HasMany<Issue>(project => project.Issues)
