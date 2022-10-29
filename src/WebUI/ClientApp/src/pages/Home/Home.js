@@ -28,13 +28,10 @@ export class Home extends Component {
     return (
       <>
         <div className="page">
-          <div className="sidebar">
+          <aside className="sidebar">
             <NavMenu />
-          </div>
+          </aside>
           <main>
-            <div className="top-row px-4">
-              <a href="/login" target="_blank">Sign In</a>
-            </div>
             <article className="content px-4">
               Content body
             </article>

@@ -18,6 +18,10 @@
     top: -2px;
 }
 
+.nav-link {
+    padding: .5rem 1rem;
+}
+
 .nav-item {
     font-size: 0.9rem;
     padding-bottom: 0.5rem;
