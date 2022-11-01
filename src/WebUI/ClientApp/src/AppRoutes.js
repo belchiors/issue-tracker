@@ -1,9 +1,14 @@
-import { Home } from "./pages/Home/Home";
+import { Issues } from "./pages/Issues/Issues";
+import { Projects } from './pages/Projects/Projects';
 
 const AppRoutes = [
   {
     index: true,
-    element: <Home />
+    element: <Projects />
+  },
+  {
+    path: '/issues',
+    element: <Issues />
   }
 ];
 
