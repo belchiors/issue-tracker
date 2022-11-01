@@ -1,0 +1,11 @@
+.modal-content {
+    border-radius: 2px;
+}
+
+.btn-close:focus {
+    box-shadow: none;
+}
+
+.show {
+    display: block;
+}
