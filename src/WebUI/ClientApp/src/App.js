@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
 import { Layout } from 'pages/Layout.js';
 
 import './custom.css';
 
-export default class App extends Component {
+export default class App extends React.Component {
   static displayName = App.name;
 
   render() {
