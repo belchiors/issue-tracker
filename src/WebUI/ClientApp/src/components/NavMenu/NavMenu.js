@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { NavLink } from "reactstrap";
+import { a } from "reactstrap";
 
 import './NavMenu.css';
 
-export class NavMenu extends Component {
+export class NavMenu extends React.Component {
   static displayName = NavMenu.name;
 
   constructor(props) {
@@ -42,19 +42,14 @@ export class NavMenu extends Component {
         <div className={this.navMenuCssClass()}>
           <nav className="flex-column">
             <div className="nav-item px-3">
-              <NavLink className="nav-link" href="/">
+              <a className="nav-link" href="/">
                 <span className="oi oi-home" aria-hidden="true"></span> Home
-              </NavLink>
+              </a>
             </div>
             <div className="nav-item px-3">
-              <NavLink className="nav-link" href="counter">
-                <span className="oi oi-plus" aria-hidden="true"></span> Issues
-              </NavLink>
-            </div>
-            <div className="nav-item px-3">
-              <NavLink className="nav-link" href="fetchdata">
-                <span className="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-              </NavLink>
+              <a className="nav-link" href="/issues">
+                <span className="oi oi-list-rich" aria-hidden="true"></span> Issues
+              </a>
             </div>
           </nav>
         </div>
