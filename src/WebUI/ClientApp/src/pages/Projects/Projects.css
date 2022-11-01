@@ -1,0 +1,16 @@
+.project-list.ul {
+    list-style: none;
+}
+
+.list-item {
+    border-radius: 2px;
+}
+
+.list-item:hover {
+    cursor: pointer;
+    background-color: #e2e2e5;
+}
+
+.list-item > .favicon {
+    flex-shrink: 1;
+}
