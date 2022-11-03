@@ -1,12 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { a } from "reactstrap";
 
 import './NavMenu.css';
 
 export class NavMenu extends React.Component {
-  static displayName = NavMenu.name;
-
   constructor(props) {
     super(props);
 
@@ -44,6 +40,11 @@ export class NavMenu extends React.Component {
             <div className="nav-item px-3">
               <a className="nav-link" href="/">
                 <span className="oi oi-home" aria-hidden="true"></span> Home
+              </a>
+            </div>
+            <div className="nav-item px-3">
+              <a className="nav-link" href="/projects">
+                <span className="oi oi-list-rich" aria-hidden="true"></span> Projects
               </a>
             </div>
             <div className="nav-item px-3">

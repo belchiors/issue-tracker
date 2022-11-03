@@ -1,5 +1,4 @@
-@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro');
 
 html, body {
     font-family: 'Source Sans Pro', sans-serif;
@@ -16,6 +15,22 @@ a, .btn-link {
 
 main {
     flex: 1;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.modal-content {
+    border-radius: 2px;
+}
+
+.btn-close:focus {
+    box-shadow: none;
+}
+
+.show {
+    display: block;
 }
 
 .content {
@@ -38,20 +53,7 @@ main {
 }
 
 .table {
-    user-select: none;
     border: 1px solid #e0e4e9;
-}
-
-.table {
-    cursor: pointer;
-}
-
-.table-hover > tbody > tr:hover * {
-    background-color: #e9f3fc !important;
-}
-
-.table-hover > tbody > tr:hover > * {
-    --bs-table-accent-bg: #e9f3fc !important;
 }
 
 .form-control {

@@ -1,9 +1,7 @@
 import React from 'react';
-import { NavMenu } from 'components';
+import { NavMenu } from 'components/NavMenu';
 
 export class Layout extends React.Component {
-  static displayName = Layout.name;
-
   render() {
     return (
       <div className="page">
