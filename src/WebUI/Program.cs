@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-string connectionString = builder.Configuration.GetConnectionString("DefaultConnection"); ;
+string connectionString = builder.Configuration.GetConnectionString("LocalConnection"); ;
 
 if (builder.Environment.IsProduction())
     connectionString = Environment.GetEnvironmentVariable("DATABASE_URL")!;
