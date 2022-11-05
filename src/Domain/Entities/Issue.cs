@@ -1,27 +1,32 @@
-﻿using Domain.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
+
+using Domain.Enums;
 
 namespace Domain.Entities
 {
     public class Issue
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public IssuePriority Priority { get; set; }
         public IssueStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public int UserId { get; set; }
-        public int ProjectId { get; set; }
-        public virtual User User { get; set; }
-        public virtual Project Project { get; set; }
-        public virtual IEnumerable<User>? Assignees { get; set; }
+
+        // Navigation property that holds a reference to a single user entity
+        public Guid UserId { get; set; }
+        public User Reporter { get; set; }
+        
+        // Navigation property that holds a reference to a single project entity
+        public Guid ProjectId { get; set; }
+        public Project Project { get; set; }
+
+        // Navigation property that contains references to many assined users
+        public IEnumerable<User>? Assignees { get; set; }
+
+        // Navigation property that contains references to many related comments
+        public IEnumerable<Comment>? Comments { get; set; }
     }
 }

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence
 {
@@ -19,20 +14,60 @@ namespace Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Issue>()
-                .HasOne<User>(issue => issue.User)
-                .WithMany(user => user.Issues)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasForeignKey(issue => issue.UserId);
-
+            // Defines email as a unique field for user.
             modelBuilder.Entity<User>()
-                .HasMany<Issue>(user => user.AssignedIssues)
-                .WithMany(issue => issue.Assignees);
+                .HasIndex(u => u.Email)
+                .IsUnique();
 
+            // Explicity defines issue description as optional
+            modelBuilder.Entity<Issue>()
+                .Property(e => e.Description)
+                .IsRequired(false);
+
+            // Explicity defines project description as optional
             modelBuilder.Entity<Project>()
-                .HasMany<Issue>(project => project.Issues)
-                .WithOne(issue => issue.Project)
-                .HasForeignKey(issue => issue.ProjectId);
+                .Property(p => p.Description)
+                .IsRequired(false);
+
+            // Explicity defines url description as optional
+            modelBuilder.Entity<Project>()
+                .Property(p => p.Url)
+                .IsRequired(false);
+
+            // An issue can be assigned to many users, each user can be assigned to many issues.
+            modelBuilder.Entity<Issue>()
+                .HasMany(i => i.Assignees)
+                .WithMany(u => u.AssignedIssues);
+
+            // An issue is reported by one user, each user may report many issues.
+            modelBuilder.Entity<Issue>()
+                .HasOne(e => e.Reporter)
+                .WithMany()
+                .IsRequired();
+
+            // An issue is associated with exacly one project, each project may have many issues.
+            modelBuilder.Entity<Issue>()
+                .HasOne(e => e.Project)
+                .WithMany(p => p.Issues)
+                .IsRequired();
+
+            // A comment is associated with exacly one issue, each issue may have many comments.
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Issue)
+                .WithMany(e => e.Comments)
+                .IsRequired();
+
+            // A comment belongs to exacly one user, and each user may create many comments.
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Author)
+                .WithMany()
+                .IsRequired();
+
+            // A project is managed by exacly one user, and each user may manage exacly one project.
+            modelBuilder.Entity<Project>()
+                .HasOne(p => p.Manager)
+                .WithMany()
+                .IsRequired();
         }
     }
 }
