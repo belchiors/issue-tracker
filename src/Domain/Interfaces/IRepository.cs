@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Domain.Interfaces;
 
 public interface IRepository<T> where T : class
 {
-    T? FindById(Guid id);
-    IEnumerable<T> FindAll();
-    IEnumerable<T> FindAll(Predicate<T> predicate);
-    void Insert(T entity);
-    void Update(T entity);
-    void Delete(T entity);
+    Task<T?> FindById(Guid id);
+    Task<IEnumerable<T>> FindAll();
+    Task<IEnumerable<T>> FindAll(Expression<Func<T, bool>> predicate);
+    Task Insert(T entity);
+    Task Update(T entity);
+    Task Delete(T entity);
 }
