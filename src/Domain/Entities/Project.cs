@@ -10,6 +10,8 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Descrition { get; set; }
+        public string Url { get; set; }
         public virtual IEnumerable<Issue>? Issues { get; set; } = Enumerable.Empty<Issue>();
     }
 }
