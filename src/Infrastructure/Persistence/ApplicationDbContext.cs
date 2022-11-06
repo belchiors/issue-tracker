@@ -9,6 +9,8 @@ namespace Infrastructure.Persistence
         public DbSet<Project> Projects { get; set; }
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Comment> Comments { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) { }
 
