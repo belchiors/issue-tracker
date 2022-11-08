@@ -13,7 +13,7 @@ const cols = [
 ]
 
 function Projects() {
-  const [ projects, addProjects ] = useState([]);
+  const [ projects, setProjects ] = useState([]);
   const [ modalState, setModalState ] = useState(false);
 
   const handleModal = () => {
@@ -21,16 +21,9 @@ function Projects() {
   }
 
   const populateTableData = async () => {
-    // const response = await fetch('projects/getAll');
-    // const data = await response.json();
-    const data = Array.from({ length: 5 }, (_, index) => ({
-      id: index,
-      title: `Project No. ${index}`,
-      description: 'Lorem Ipsum dolor sit amet',
-      createdAt: new Date().toLocaleDateString(),
-      issues: Math.floor(Math.random() * 150)
-    }));
-    addProjects(data);
+    const response = await fetch('api/projects');
+    const data = await response.json();
+    setProjects(data);
   }
 
   useEffect(() => {
