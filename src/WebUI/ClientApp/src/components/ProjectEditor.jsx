@@ -1,42 +1,55 @@
 import React from 'react';
-import { EditorModal } from 'components/EditorModal';
+import ModalDialog from 'components/ModalDialog';
 
-export class ProjectEditor extends React.Component {
-  constructor(props) {
-    super(props);
-    this.onSubmit = this.onSubmit.bind(this);
-    this.onClose = this.onClose.bind(this);
-  }
-
-  onSubmit() {
+function ProjectEditor(props) {
+  const onSubmit = () => {
     console.log('Submitting form');
-    this.props.onClose();
+    props.onClose();
   }
 
-  onClose() {
+  const onClose = () => {
     console.log('Cleaning form');
-    this.props.onClose();
+    props.onClose();
   }
-  
-  render() {
-    return (
-      <EditorModal
-        title="New Project"
-        display={this.props.display}
-        onSubmit={this.onSubmit}
-        onClose={this.onClose}
-      >
-        <form>
-          <div className="form-group">
-            <label htmlFor="recipient-name" className="col-form-label">Name</label>
-            <input type="text" className="form-control" id="recipient-name" />
-          </div>
-          <div className="form-group">
-            <label htmlFor="message-text" className="col-form-label">Description</label>
-            <textarea className="form-control" id="message-text"></textarea>
-          </div>
-        </form>
-      </EditorModal>
-    );
-  }
+
+  return (
+    <ModalDialog
+      title="New Project"
+      display={props.display}
+      onSubmit={onSubmit}
+      onClose={onClose}
+    >
+      <form className="">
+        <div className="form-group">
+          <label className="col-form-label">Name</label>
+          <input className="form-control" type="text" />
+        </div>
+        <div className="form-group">
+          <label className="col-form-label">URL</label>
+          <input className="form-control" type="text" />
+        </div>
+        <div className="form-group">
+          <label className="col-form-label">Description</label>
+          <textarea className="form-control" rows="10"></textarea>
+        </div>
+        <div className="form-group">
+          <label className="col-form-label">Members</label>
+          <select className="form-select" multiple>
+            <option value="0">None</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+            <option value="4">Four</option>
+            <option value="5">Fix</option>
+            <option value="6">Six</option>
+            <option value="7">Seven</option>
+            <option value="8">Eight</option>
+            <option value="9">Nine</option>
+          </select>
+        </div>
+      </form>
+    </ModalDialog>
+  );
 }
+
+export default ProjectEditor;

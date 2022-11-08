@@ -1,0 +1,11 @@
+.icon-button {
+    height: 48px;
+    width: 48px;
+    border: none;
+    border-radius: 50%;
+    background-color: transparent;
+}
+
+.icon-button:hover {
+    background-color: #e7e7e8;
+}

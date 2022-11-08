@@ -1,0 +1,28 @@
+.table {
+    cursor: pointer;
+    user-select: none;
+}
+
+.table th {
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+/* .table th:last-child,
+.table td:last-child {
+    width: 1%;
+} */
+
+.table tr:hover {
+    background-color: #0d152f1e !important;
+}
+
+.table-dark th {
+    background-color: var(--theme-primary);
+}
+
+.lg-table tr {
+    line-height: 3.5rem;
+    min-height: 3.5rem;
+    height: 3.5rem;
+ }

@@ -1,0 +1,4 @@
+.modal-content {
+    box-shadow: var(--theme-box-shadow);
+    border-radius: var(--border-radius) !important;
+}
