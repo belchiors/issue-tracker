@@ -1,5 +1,6 @@
 ﻿using System;
 using Infrastructure.Persistence;
+using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,6 +15,16 @@ namespace Infrastructure
                 var version = new MySqlServerVersion(new Version(8, 0, 30));
                 options.UseMySql(connectionString, version, null);
             });
+        }
+        
+        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
+        {
+            services.AddSingleton<CommentRepository>();
+            services.AddSingleton<IssueRepository>();
+            services.AddSingleton<ProjectRepository>();
+            services.AddSingleton<UserRepository>();
+            
+            return services;
         }
     }
 }
