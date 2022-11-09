@@ -3,14 +3,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Infrastructure;
-using System.Data.Common;
 using System;
+using Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllersWithViews();
+builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices();
 
 string connectionString = builder.Configuration.GetConnectionString("LocalConnection"); ;
 
