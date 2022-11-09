@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
-public class UserRepository : IRepository<User>
+public class UserRepository : IUserRepository
 {
     private readonly ApplicationDbContext _dbContext;
 
