@@ -24,6 +24,11 @@ public class UserRepository : IRepository<User>
         return await _dbContext.Users.FindAsync(id);
     }
 
+    public async Task<User?> FindByEmail(string email)
+    {
+        return await _dbContext.Users.SingleOrDefaultAsync(user => user.Email.Equals(email));
+    }
+
     public async Task<IEnumerable<User>> FindAll()
     {
         return await _dbContext.Users.ToListAsync();
