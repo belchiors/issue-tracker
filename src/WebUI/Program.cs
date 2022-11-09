@@ -8,16 +8,15 @@ using Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Get the connection string whether the environment is production or development
+string connectionString = builder.Environment.IsProduction()
+    ? Environment.GetEnvironmentVariable("DATABASE_URL")!
+    : builder.Configuration.GetConnectionString("LocalConnection");
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices();
-
-string connectionString = builder.Configuration.GetConnectionString("LocalConnection"); ;
-
-if (builder.Environment.IsProduction())
-    connectionString = Environment.GetEnvironmentVariable("DATABASE_URL")!;
-
 builder.Services.AddDbContext(connectionString);
 
 var app = builder.Build();
