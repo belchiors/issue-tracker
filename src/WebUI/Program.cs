@@ -13,11 +13,17 @@ string connectionString = builder.Environment.IsProduction()
     ? Environment.GetEnvironmentVariable("DATABASE_URL")!
     : builder.Configuration.GetConnectionString("LocalConnection");
 
+// Get JTW security key whether the environment is production or development
+string securityKey = builder.Environment.IsProduction()
+    ? Environment.GetEnvironmentVariable("JWTSecurityKey")!
+    : builder.Configuration.GetValue<string>("JWTSecurityKey");
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddDbContext(connectionString);
+builder.Services.ConfigureAuthenticationServices(securityKey);
 
 var app = builder.Build();
 
@@ -32,6 +38,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
