@@ -18,7 +18,7 @@ public static class DependencyInjection
     /// <summary>
     /// This method configures authentication services using JTW Bearer.
     /// </summary>
-    public static IServiceCollection ConfigureAuthenticationServices(this ServiceCollection services, string securityKey)
+    public static IServiceCollection ConfigureAuthenticationServices(this IServiceCollection services, string securityKey)
     {
         services.AddSingleton<TokenService>(tokenService => new TokenService(securityKey));
         
