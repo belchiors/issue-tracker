@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import MainLayout from 'pages/MainLayout';
 import AppRoutes from './AppRoutes';
 
-import './custom.css';
+import './custom.scss';
 
 function App() {
   return (

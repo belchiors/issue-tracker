@@ -8,17 +8,12 @@
     text-transform: uppercase;
 }
 
-/* .table th:last-child,
-.table td:last-child {
-    width: 1%;
-} */
-
 .table tr:hover {
     background-color: #0d152f1e !important;
 }
 
 .table-dark th {
-    background-color: var(--theme-primary);
+    background-color: var(--primary) !important;
 }
 
 .lg-table tr {

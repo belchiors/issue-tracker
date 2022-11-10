@@ -27,7 +27,7 @@ function MainLayout(props) {
             </div>
           </div>
         </div>
-        <div className="container">
+        <div className="container-fluid">
           <Outlet />
         </div>
       </main>

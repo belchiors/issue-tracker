@@ -1,5 +1,5 @@
 .side-panel {
-    background-color: var(--theme-primary);
+    background-color: var(--primary);
     user-select: none;
     width: 250px;
     height: 100vh;
@@ -16,8 +16,8 @@
     top: 0;
     z-index: 999;
     color: #ffffff;
-    box-shadow: var(--theme-box-shadow);
-    background-color: var(--theme-primary);
+    box-shadow: var(--box-shadow);
+    background-color: var(--primary);
 }
 
 .panel-title {
@@ -47,9 +47,9 @@
 
 .panel-item-active,
 .panel-item a:focus {
-    background-color: var(--theme-secondary);
+    background-color: var(--secondary);
 }
 
 .panel-item a:hover:not(a:focus) {
-    background-color: var(--theme-secondary);
+    background-color: var(--secondary);
 }
