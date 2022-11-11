@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebUI.Controllers;
 
 [ApiController]
-[Route("api[controller]")]
+[Route("api/[controller]")]
 public class AccountController : ControllerBase
 {
     private readonly AccountService _accountService;
