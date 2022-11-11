@@ -4,7 +4,7 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 import SidePanel from 'components/SidePanel';
 import IconButton from 'components/IconButton';
 
-function MainLayout(props) {
+function Layout(props) {
 
   const usePathName = () => {
     const location = useLocation();
@@ -35,4 +35,4 @@ function MainLayout(props) {
   );
 }
 
-export default MainLayout;
+export default Layout;
