@@ -2,6 +2,7 @@
 
 public enum IssuePriority
 {
+    None,
     Normal,
     Critical,
     Major
