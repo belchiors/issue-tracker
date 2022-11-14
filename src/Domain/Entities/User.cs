@@ -12,8 +12,7 @@ namespace Domain.Entities
         public string LastName { get; set; }
         public string Email { get; set; }
         public string PasswordHash { get; set; }
-        // public IEnumerable<UserRole> Roles { get; set; }
-
+        public UserRole Role { get; set; } = UserRole.User;
         // Navigation property that holds references to many assigned issues
         public IEnumerable<Issue> AssignedIssues { get; set; }
     }
