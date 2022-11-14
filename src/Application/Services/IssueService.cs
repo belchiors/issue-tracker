@@ -55,8 +55,8 @@ public class IssueService
         {
             Title = model.Title,
             Description = model.Description,
-            Priority = (IssuePriority)model.Priority,
-            Status = (IssueStatus)model.Status,
+            Priority = IssuePriority.None,
+            Status = IssueStatus.Open,
             UserId = Guid.Parse(model.UserId),
             ProjectId = Guid.Parse(model.ProjectId)
         };
