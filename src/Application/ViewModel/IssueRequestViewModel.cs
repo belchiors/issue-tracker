@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Application.Contract;
+namespace Application.ViewModel;
 
-public class IssueRequestDto
+public class IssueRequestViewModel
 {
     [Required] public string Title { get; set; }
     public string? Description { get; set; }

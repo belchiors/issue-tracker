@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Application.Exceptions;
 using Application.Services;
-using Application.Contract;
+using Application.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers;
@@ -19,7 +19,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("signin")]
-    public async Task<IActionResult> SignIn([FromBody] SignInDto model)
+    public async Task<IActionResult> SignIn([FromBody] SignInViewModel model)
     {
         try
         {
@@ -33,7 +33,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("signup")]
-    public async Task<IActionResult> SignUp([FromBody] SignUpDto model)
+    public async Task<IActionResult> SignUp([FromBody] SignUpViewModel model)
     {
         try
         {

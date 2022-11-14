@@ -1,7 +1,6 @@
-using Application.Contract;
+using Application.ViewModel;
 using Domain.Entities;
 using Domain.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
@@ -17,10 +16,10 @@ public class ProjectService
         _repository = repository;
     }
 
-    public async Task<IEnumerable<ProjectResponseDto>> GetAllProjectsAsync()
+    public async Task<IEnumerable<ProjectResponseViewModel>> GetAllProjectsAsync()
     {
         var items = await _repository.FindAll();
-        return items.Select((item) => new ProjectResponseDto
+        return items.Select((item) => new ProjectResponseViewModel
         {
             Id = item.Id,
             Name = item.Name,
@@ -30,8 +29,8 @@ public class ProjectService
             Issues = item.Issues?.Count() ?? 0
         });
     }
-    
-    public async Task CreateProjectAsync(ProjectRequestDto model, string userId)
+
+    public async Task CreateProjectAsync(ProjectRequestViewModel model, string userId)
     {
         var entity = new Project
         {

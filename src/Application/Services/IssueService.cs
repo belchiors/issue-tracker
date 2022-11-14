@@ -1,4 +1,4 @@
-using Application.Contract;
+using Application.ViewModel;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Interfaces;
@@ -17,10 +17,10 @@ public class IssueService
         _issueRepository = issueRepository;
     }
 
-    public async Task<IEnumerable<IssueResponseDto>> GetAllIssuesAsync()
+    public async Task<IEnumerable<IssueResponseViewModel>> GetAllIssuesAsync()
     {
         var issues = await _issueRepository.FindAll();
-        return issues.Select(issue => new IssueResponseDto
+        return issues.Select(issue => new IssueResponseViewModel
         {
             Id = issue.Id,
             Title = issue.Title,
@@ -33,10 +33,10 @@ public class IssueService
         });
     }
 
-    public async Task<IEnumerable<IssueResponseDto>> GetIssuesByProjectId(Guid projectId)
+    public async Task<IEnumerable<IssueResponseViewModel>> GetIssuesByProjectId(Guid projectId)
     {
         var issues = await _issueRepository.FindAll(issue => issue.ProjectId.Equals(projectId));
-        return issues.Select(issue => new IssueResponseDto
+        return issues.Select(issue => new IssueResponseViewModel
         {
             Id = issue.Id,
             Title = issue.Title,
@@ -49,7 +49,7 @@ public class IssueService
         });
     }
 
-    public async Task CreateNewIssue(IssueRequestDto model)
+    public async Task CreateNewIssue(IssueRequestViewModel model)
     {
         var issue = new Issue
         {
