@@ -10,8 +10,9 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        services.AddSingleton<AccountService>();
-        services.AddSingleton<ProjectService>();
+        services.AddScoped<AccountService>();
+        services.AddScoped<ProjectService>();
+        services.AddScoped<IssueService>();
 
         return services;
     }
