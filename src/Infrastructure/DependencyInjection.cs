@@ -1,4 +1,5 @@
 ﻿using System;
+using Domain.Interfaces;
 using Infrastructure.Persistence;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -19,10 +20,10 @@ namespace Infrastructure
         
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
-            services.AddSingleton<CommentRepository>();
-            services.AddSingleton<IssueRepository>();
-            services.AddSingleton<ProjectRepository>();
-            services.AddSingleton<UserRepository>();
+            // services.AddScoped<CommentRepository>();
+            services.AddScoped<IIssueRepository, IssueRepository>();
+            services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             
             return services;
         }
