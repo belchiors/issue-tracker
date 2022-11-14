@@ -20,14 +20,22 @@ function PrivateRoute({ children }) {
 function AppRoutes() {
   return (
     <Routes>
-      <Route exact path='/' element={
-        <PrivateRoute>
-          <Layout />
-        </PrivateRoute>
-      }>
-        <Route index path="" element={<Home />} />
-        <Route path='issues' element={<Issues />} />
-        <Route path='projects' element={<Projects />} />
+      <Route exact path='/' element={<Layout />}>
+        <Route index path="" element={
+          <PrivateRoute>
+            <Home />
+          </PrivateRoute>
+        }/>
+        <Route path='issues' element={
+          <PrivateRoute>
+            <Issues />
+          </PrivateRoute>
+        }/>
+        <Route path='projects' element={
+          <PrivateRoute>
+            <Projects />
+          </PrivateRoute>
+        }/>
       </Route>
       <Route path='/account'>
         <Route path='signin' element={<SignIn />} />

@@ -1,8 +1,16 @@
 .icon-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 48px;
     width: 48px;
-    border: none;
+    z-index: 9999;
     border-radius: 50%;
+}
+
+.btn-icon {
+    vertical-align: middle;
+    border: transparent;
     background-color: transparent;
 }
 

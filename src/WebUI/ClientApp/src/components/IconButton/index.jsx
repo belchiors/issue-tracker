@@ -1,9 +1,13 @@
 import './styles.css';
 
 function IconButton(props) {
+  const onClick = (event) => {
+    event.stopPropagation();
+    props.onClick();
+  }
   return (
-    <div className="dropdown px-3">
-      <button className="icon-button" onClick={props.onClick}>
+    <div className="icon-button dropdown px-3">
+      <button className="btn-icon" onClick={onClick}>
         <i className={props.variant}></i>
       </button>
       <div className="dropdown-menu">

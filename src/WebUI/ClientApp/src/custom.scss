@@ -97,8 +97,7 @@ main {
 .bi {
     width: 2rem;
     font-size: 1.1rem;
-    vertical-align: text-top;
-    top: -2px;
+    vertical-align: middle;
 }
 
 .btn {
@@ -114,6 +113,39 @@ main {
  &:focus {
     box-shadow: none !important;
  }
+}
+
+.modal-content {
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius) !important;
+}
+
+.show {
+    display: block !important;
+}
+
+.table {
+    cursor: pointer;
+    user-select: none;
+}
+
+.table th {
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+.table tr:hover {
+    background-color: #0d152f1e !important;
+}
+
+.table-dark th {
+    background-color: var(--primary) !important;
+}
+
+.lg-table tr {
+    line-height: 3.5rem;
+    min-height: 3.5rem;
+    height: 3.5rem;
 }
 
 @import "../node_modules/bootstrap/scss/bootstrap";

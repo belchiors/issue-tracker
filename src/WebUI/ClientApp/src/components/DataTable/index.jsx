@@ -1,5 +1,3 @@
-import './styles.css';
-
 function DataTable(props) {
   return (
     <table className="table table-hover lg-table nowrap">

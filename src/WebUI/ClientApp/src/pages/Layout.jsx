@@ -16,7 +16,7 @@ function Layout(props) {
     <div className="page">
       <SidePanel />
       <main>
-        <div className="top-row px-4 navbar navbar-light">
+        <div className="top-row navbar sticky-top px-4 navbar-light">
           <Link className="navbar-brand" to="/">{usePathName()}</Link>
           <div className="nav-menu">
             <div className="nav-item">

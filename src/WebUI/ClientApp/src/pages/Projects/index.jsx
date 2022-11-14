@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ProjectEditor from 'components/ProjectEditor';
+import IconButton from 'components/IconButton';
 
 import './styles.css';
-import DataTable from 'components/DataTable';
-
-const cols = [
-  { label: 'No.', field: 'id'},
-  { label: 'Title', field: 'title'},
-  { label: 'Issues', field: 'issues'},
-  { label: 'Created', field: 'createdAt'},
-  { label: 'Description', field: 'description'}
-]
 
 function Projects() {
-  const [ projects, setProjects ] = useState([]);
-  const [ modalState, setModalState ] = useState(false);
+  const navigate = useNavigate();
+  const [projects, setProjects] = useState([]);
+  const [modalState, setModalState] = useState(false);
+
+  const getIssues = async (id) => {
+    navigate(`/issues?projectId=${id}`);
+  }
 
   const handleModal = () => {
     setModalState(!modalState);
@@ -47,10 +45,35 @@ function Projects() {
             onClick={handleModal}>New Project</button>
         </div>
       </div>
-      <DataTable
-        data={projects}
-        columns={cols}
-      />
+      <table className="table table-hover lg-table nowrap">
+        <thead className="table-dark">
+          <tr className="text-center">
+            <th>No.</th>
+            <th>Name</th>
+            <th>Issues</th>
+            <th>Created</th>
+            <th>Description</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {projects.map((project, index) => 
+            <tr key={index} onClick={() => getIssues(project.id)}>
+              <td className="text-center">{index}</td>
+              <td className="text-center">{project.name}</td>
+              <td className="text-center">{project.issues}</td>
+              <td className="text-center">{new Date(project.createdAt).toDateString()}</td>
+              <td className="text-center">{project.description}</td>
+              <td className="text-center">
+                <IconButton
+                  variant={"bi bi-three-dots-vertical"}
+                  onClick={() => alert('Not implemented yet')}
+                />
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
     </div>
   );
 }

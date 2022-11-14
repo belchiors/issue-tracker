@@ -12,6 +12,6 @@ function login(token) {
 
 function logout() {
     localStorage.removeItem('TOKEN_KEY');
-};
+}
 
 export { isAuthenticated, getToken, login, logout };

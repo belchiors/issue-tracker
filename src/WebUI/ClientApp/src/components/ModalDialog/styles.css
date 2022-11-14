@@ -1,8 +1,0 @@
-.modal-content {
-    box-shadow: var(--box-shadow);
-    border-radius: var(--border-radius) !important;
-}
-
-.show {
-    display: block !important;
-}
