@@ -1,8 +1,8 @@
 using Domain.Entities;
 
-namespace Application.ViewModel;
+namespace Application.Contract;
 
-public class IssueResponseViewModel
+public class IssueResponseDto
 {
     public Guid Id { get; set; }
     public string Title { get; set; }

@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Application.Exceptions;
-using Application.ViewModel;
+using Application.Contract;
 using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -21,7 +21,7 @@ public class AccountService
         _tokenService = tokenService;
     }
     
-    public async Task<string?> AuthenticateUser(SignInViewModel model)
+    public async Task<string?> AuthenticateUser(SignInDto model)
     {
         var user = await _userRepository.FindByEmail(model.Email);
         
@@ -31,7 +31,7 @@ public class AccountService
         return _tokenService.GenerateToken(user);
     }
     
-    public async Task CreateNewUser(SignUpViewModel model)
+    public async Task CreateNewUser(SignUpDto model)
     {
         var user = await _userRepository.FindByEmail(model.Email);
         

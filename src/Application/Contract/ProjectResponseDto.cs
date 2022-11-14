@@ -1,6 +1,6 @@
-namespace Application.ViewModel;
+namespace Application.Contract;
 
-public class ProjectResponseViewModel
+public class ProjectResponseDto
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Application.ViewModel;
+namespace Application.Contract;
 
-public class SignUpViewModel
+public class SignUpDto
 {
     [Required]
     public string FirstName { get; set; }
