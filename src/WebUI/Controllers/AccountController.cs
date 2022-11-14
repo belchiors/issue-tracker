@@ -1,9 +1,8 @@
 using System;
-using System.Net;
 using System.Threading.Tasks;
 using Application.Exceptions;
 using Application.Services;
-using Application.Shared;
+using Application.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers;
@@ -20,30 +19,30 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("signin")]
-    public async Task<IActionResult> SignIn(UserDto dto)
+    public async Task<IActionResult> SignIn([FromBody] SignInViewModel model)
     {
         try
         {
-            var token = await _accountService.AuthenticateUser(dto);
+            var token = await _accountService.AuthenticateUser(model);
             return Ok(token);
         }
         catch (UserNotFoundException)
         {
-            return NotFound();
+            return NotFound("Incorrect email or password");
         }
     }
 
     [HttpPost("signup")]
-    public async Task<IActionResult> SignUp(UserDto dto)
+    public async Task<IActionResult> SignUp([FromBody] SignUpViewModel model)
     {
         try
         {
-            await _accountService.CreateNewUser(dto);
-            return Created("", dto);
+            await _accountService.CreateNewUser(model);
+            return Created("", model);
         }
         catch (UserConflictException)
         {
-            return Conflict("");
+            return Conflict("Email has already been taken");
         }
     }
 }
