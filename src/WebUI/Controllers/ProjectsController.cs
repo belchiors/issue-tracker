@@ -11,6 +11,7 @@ namespace WebUI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class ProjectsController : ControllerBase
 {
     private readonly ProjectService _service;
@@ -27,7 +28,7 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles="Admin")]
     public async Task<IActionResult> Create(ProjectRequestDto dto)
     {
         // Get current logged in user name identifier

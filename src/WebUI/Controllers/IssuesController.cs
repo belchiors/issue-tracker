@@ -1,12 +1,14 @@
 using System;
 using System.Threading.Tasks;
 using Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class IssuesController : ControllerBase
 {
     private readonly IssueService _issueService;
