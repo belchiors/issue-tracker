@@ -20,9 +20,9 @@ string securityKey = builder.Environment.IsProduction()
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddApplicationServices();
-builder.Services.AddInfrastructureServices();
 builder.Services.AddDbContext(connectionString);
+builder.Services.AddInfrastructureServices();
+builder.Services.AddApplicationServices();
 builder.Services.ConfigureAuthenticationServices(securityKey);
 
 var app = builder.Build();
