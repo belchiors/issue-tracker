@@ -1,4 +1,4 @@
-using Application.ViewModel;
+using Application.Contract;
 using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -16,10 +16,10 @@ public class ProjectService
         _repository = repository;
     }
 
-    public async Task<IEnumerable<ProjectResponseViewModel>> GetAllProjectsAsync()
+    public async Task<IEnumerable<ProjectResponseDto>> GetAllProjectsAsync()
     {
         var items = await _repository.FindAll();
-        return items.Select((item) => new ProjectResponseViewModel
+        return items.Select((item) => new ProjectResponseDto
         {
             Id = item.Id,
             Name = item.Name,
@@ -30,14 +30,14 @@ public class ProjectService
         });
     }
 
-    public async Task CreateProjectAsync(ProjectRequestViewModel model, string userId)
+    public async Task CreateProjectAsync(ProjectRequestDto dto, string userId)
     {
         var entity = new Project
         {
-            Name = model.Name,
-            Description = model.Description,
+            Name = dto.Name,
+            Description = dto.Description,
             CreatedAt = DateTime.UtcNow,
-            Url = model.Url,
+            Url = dto.Url,
             UserId = Guid.Parse(userId)
         };
 

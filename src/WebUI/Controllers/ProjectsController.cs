@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Application.Services;
-using Application.ViewModel;
+using Application.Contract;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,19 +21,19 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<ProjectResponseViewModel>> Get()
+    public async Task<IEnumerable<ProjectResponseDto>> Get()
     {
         return await _service.GetAllProjectsAsync();
     }
 
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> Create(ProjectRequestViewModel model)
+    public async Task<IActionResult> Create(ProjectRequestDto dto)
     {
         // Get current logged in user name identifier
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         
-        await _service.CreateProjectAsync(model, userId!);
-        return Created("", model);
+        await _service.CreateProjectAsync(dto, userId!);
+        return Created("", dto);
     }
 }

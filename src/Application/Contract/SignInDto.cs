@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Application.ViewModel;
+namespace Application.Contract;
 
-public class SignInViewModel
+public class SignInDto
 {
     [Required]
     [EmailAddress]

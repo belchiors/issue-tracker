@@ -1,4 +1,4 @@
-using Application.ViewModel;
+using Application.Contract;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Interfaces;
@@ -17,10 +17,10 @@ public class IssueService
         _issueRepository = issueRepository;
     }
 
-    public async Task<IEnumerable<IssueResponseViewModel>> GetAllIssuesAsync()
+    public async Task<IEnumerable<IssueResponseDto>> GetAllIssuesAsync()
     {
         var issues = await _issueRepository.FindAll();
-        return issues.Select(issue => new IssueResponseViewModel
+        return issues.Select(issue => new IssueResponseDto
         {
             Id = issue.Id,
             Title = issue.Title,
@@ -33,10 +33,10 @@ public class IssueService
         });
     }
 
-    public async Task<IEnumerable<IssueResponseViewModel>> GetIssuesByProjectId(Guid projectId)
+    public async Task<IEnumerable<IssueResponseDto>> GetIssuesByProjectId(Guid projectId)
     {
         var issues = await _issueRepository.FindAll(issue => issue.ProjectId.Equals(projectId));
-        return issues.Select(issue => new IssueResponseViewModel
+        return issues.Select(issue => new IssueResponseDto
         {
             Id = issue.Id,
             Title = issue.Title,
@@ -49,16 +49,16 @@ public class IssueService
         });
     }
 
-    public async Task CreateNewIssue(IssueRequestViewModel model)
+    public async Task CreateNewIssue(IssueRequestDto dto)
     {
         var issue = new Issue
         {
-            Title = model.Title,
-            Description = model.Description,
+            Title = dto.Title,
+            Description = dto.Description,
             Priority = IssuePriority.None,
             Status = IssueStatus.Open,
-            UserId = Guid.Parse(model.UserId),
-            ProjectId = Guid.Parse(model.ProjectId)
+            UserId = Guid.Parse(dto.UserId),
+            ProjectId = Guid.Parse(dto.ProjectId)
         };
 
         await _issueRepository.Insert(issue);

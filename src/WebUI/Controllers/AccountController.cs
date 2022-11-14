@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Application.Exceptions;
 using Application.Services;
-using Application.ViewModel;
+using Application.Contract;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers;
@@ -19,11 +19,11 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("signin")]
-    public async Task<IActionResult> SignIn([FromBody] SignInViewModel model)
+    public async Task<IActionResult> SignIn([FromBody] SignInDto dto)
     {
         try
         {
-            var token = await _accountService.AuthenticateUser(model);
+            var token = await _accountService.AuthenticateUser(dto);
             return Ok(token);
         }
         catch (UserNotFoundException)
@@ -33,12 +33,12 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("signup")]
-    public async Task<IActionResult> SignUp([FromBody] SignUpViewModel model)
+    public async Task<IActionResult> SignUp([FromBody] SignUpDto dto)
     {
         try
         {
-            await _accountService.CreateNewUser(model);
-            return Created("", model);
+            await _accountService.CreateNewUser(dto);
+            return Created("", dto);
         }
         catch (UserConflictException)
         {

@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Application.Exceptions;
-using Application.ViewModel;
+using Application.Contract;
 using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -21,29 +21,29 @@ public class AccountService
         _tokenService = tokenService;
     }
     
-    public async Task<string?> AuthenticateUser(SignInViewModel model)
+    public async Task<string?> AuthenticateUser(SignInDto dto)
     {
-        var user = await _userRepository.FindByEmail(model.Email);
+        var user = await _userRepository.FindByEmail(dto.Email);
         
-        if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
+        if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
             throw new UserNotFoundException();
         
         return _tokenService.GenerateToken(user);
     }
     
-    public async Task CreateNewUser(SignUpViewModel model)
+    public async Task CreateNewUser(SignUpDto dto)
     {
-        var user = await _userRepository.FindByEmail(model.Email);
+        var user = await _userRepository.FindByEmail(dto.Email);
         
         if (user != null)
             throw new UserConflictException();
 
-        var passwordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+        var passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
         await _userRepository.Insert(new User
         {
-            FirstName = model.FirstName,
-            LastName = model.LastName,
-            Email = model.Email,
+            FirstName = dto.FirstName,
+            LastName = dto.LastName,
+            Email = dto.Email,
             PasswordHash = passwordHash
         });
         
