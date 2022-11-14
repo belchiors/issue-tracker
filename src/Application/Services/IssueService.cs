@@ -49,7 +49,7 @@ public class IssueService
         });
     }
 
-    public async Task CreateNewIssue(IssueRequestDto dto)
+    public async Task CreateNewIssue(IssueRequestDto dto, string userId)
     {
         var issue = new Issue
         {
@@ -57,7 +57,7 @@ public class IssueService
             Description = dto.Description,
             Priority = IssuePriority.None,
             Status = IssueStatus.Open,
-            UserId = Guid.Parse(dto.UserId),
+            UserId = Guid.Parse(userId),
             ProjectId = Guid.Parse(dto.ProjectId)
         };
 
