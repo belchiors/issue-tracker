@@ -23,8 +23,8 @@ public class AccountController : ControllerBase
     {
         try
         {
-            var token = await _accountService.AuthenticateUser(dto);
-            return Ok(token);
+            var jwtResponse = await _accountService.AuthenticateUser(dto);
+            return Ok(jwtResponse);
         }
         catch (UserNotFoundException)
         {

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Application.Exceptions;
 using Application.Contract;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -21,14 +22,20 @@ public class AccountService
         _tokenService = tokenService;
     }
     
-    public async Task<string?> AuthenticateUser(SignInDto dto)
+    public async Task<JwtResponseDto> AuthenticateUser(SignInDto dto)
     {
         var user = await _userRepository.FindByEmail(dto.Email);
         
         if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
             throw new UserNotFoundException();
+
+        var response = new JwtResponseDto
+        {
+            Token = _tokenService.GenerateToken(user),
+            Role = Enum.GetName(typeof(UserRole), user.Role)
+        };
         
-        return _tokenService.GenerateToken(user);
+        return response;
     }
     
     public async Task CreateNewUser(SignUpDto dto)
