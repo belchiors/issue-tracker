@@ -1,31 +1,36 @@
-import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import api from 'services/api';
-import { login } from 'services/auth';
+import api from "services/api";
+import { login } from "services/auth";
 
-import './styles.css';
+import "./styles.css";
 
 function SignIn() {
   const navigate = useNavigate();
-  const [ errors, setErrors ] = useState([]);
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const [errors, setErrors] = useState([]);
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (event) => {
+    event.preventDefault();
+    const { name, value } = event.target;
+    setFormData((values) => ({ ...values, [name]: value }));
+  };
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    const data = {
-      email: emailRef.current.value,
-      password: passwordRef.current.value
-    };
-    await api.post('api/account/signin', data)
-      .then(response => {
-        const token = response.data;
-        // Set token and redirect to home page
-        login(token)
-        navigate('/');
+    await api
+      .post("api/account/signin", formData)
+      .then((response) => {
+        const jwt = response.data;
+        login(jwt);
+        navigate("/");
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
@@ -42,27 +47,27 @@ function SignIn() {
           if (validationErrors != null) {
             const fieldErrors = [];
             for (let field in validationErrors) {
-              validationErrors[field].map(err => fieldErrors.push(err));
+              validationErrors[field].map((err) => fieldErrors.push(err));
             }
-            setErrors(fieldErrors)
+            setErrors(fieldErrors);
           }
         } else {
           alert(error.message);
         }
       });
-  }
+  };
 
   const signInAsAdmin = () => {
-    alert('Not implemented yet');
-  }
+    alert("Not implemented yet");
+  };
 
   const signInAsMember = () => {
-    alert('Note implemented yet');
-  }
+    alert("Note implemented yet");
+  };
 
   return (
     <div className="container-fluid">
-      <div className="outlet max-w-sm form-container">
+      <div className="card max-w-sm form-container">
         <a href="/">
           <img className="" src="" alt="" />
         </a>
@@ -71,37 +76,51 @@ function SignIn() {
         {errors.length > 0 && (
           <div className="alert alert-danger mt-3 px-4" role="alert">
             <ul className="list-group">
-              {errors.map(error => <li>{error}</li>)}
+              {errors.map((error) => (
+                <li>{error}</li>
+              ))}
             </ul>
           </div>
         )}
-        <form onSubmit={onSubmit} >
+        <form onSubmit={onSubmit}>
           <div className="form-group mt-3">
             <label className="col-form-label">Email</label>
             <input
               className="form-control"
-              type="email" placeholder="Enter your email"
-              ref={emailRef} 
-              required />
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
           </div>
           <div className="form-group mt-3">
             <label className="col-form-label">Password</label>
             <input
               className="form-control"
               type="password"
-              placeholder="Enter your password"
-              ref={passwordRef} 
-              required />
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
           </div>
           <div className="mt-3">
-            <button className="btn btn-primary w-100 btn-block" type="submit">Sign In</button>
+            <button className="btn btn-primary w-100 btn-block" type="submit">
+              Sign In
+            </button>
           </div>
         </form>
         <div className="mt-4 d-flex justify-content-between">
-          <button className="btn btn-info" onClick={signInAsMember}>Enter as Member</button>
-          <button className="btn btn-info" onClick={signInAsAdmin}>Enter as Admin</button>
+          <button className="btn btn-info" onClick={signInAsMember}>
+            Enter as Member
+          </button>
+          <button className="btn btn-info" onClick={signInAsAdmin}>
+            Enter as Admin
+          </button>
         </div>
-        <span className="mt-4 d-flex justify-content-center">Don't have an account?&nbsp;
+        <span className="mt-4 d-flex justify-content-center">
+          Don't have an account?&nbsp;
           <a className="" href="/account/signup">
             <span>Sign Up</span>
           </a>

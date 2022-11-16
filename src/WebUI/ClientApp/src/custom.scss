@@ -1,12 +1,10 @@
 :root {
-    --header-height: 56px;
-    --primary: #0d152f;
-    --secondary: #252c43;
-    --box-shadow:
-        0 0 1px 1px rgba(29,17,51,.04),
-        0 0 3px 2px rgba(9,32,77,.12),
-        0 0 2px -3px rgba(29,17,51,.12);
-    --border-radius: 0.188rem;
+  --header-height: 3.75rem;
+  --primary: #0d152f;
+  --secondary: #252c43;
+  --box-shadow: 0 0 1px 1px rgba(29, 17, 51, 0.04),
+    0 0 3px 2px rgba(9, 32, 77, 0.12), 0 0 2px -3px rgba(29, 17, 51, 0.12);
+  --border-radius: 0.188rem;
 }
 
 $primary: #0d152f;
@@ -37,116 +35,134 @@ $input-focus-border-color: #a7aab3;
 $table-dark-bg: $primary;
 $table-dark-hover-bg: #0d152f1e;
 
-$box-shadow:
-    0 0 1px 1px rgba(29,17,51,.04),
-    0 0 3px 2px rgba(9,32,77,.12),
-    0 0 2px -3px rgba(29,17,51,.12);
+$box-shadow: 0 0 1px 1px rgba(29, 17, 51, 0.04),
+  0 0 3px 2px rgba(9, 32, 77, 0.12), 0 0 2px -3px rgba(29, 17, 51, 0.12);
 
 $navbar-light-active-color: $body-color;
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-html, body {
-    font-family: 'Inter', sans-serif !important;
+html,
+body {
+  font-family: "Inter", sans-serif !important;
 }
 
 main {
-    flex: 1 0 auto; /* enable grow, disable shrink */
+  flex: 1 0 auto; /* enable grow, disable shrink */
 }
 
 .page {
-    position: relative;
-    display: flex;
-    flex-direction: row;
+  position: relative;
+  display: flex;
+  flex-direction: row;
 }
 
-.top-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 4.5rem;
-    position: sticky;
-    top: 0;
-    z-index: 999;
-    background-color: #ffffff;
-    box-shadow: $box-shadow;
+.navbar {
+  height: 3.75rem;
+  background-color: #ffffff;
+  box-shadow: $box-shadow;
 }
 
-.toolbar {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding-top: 1.1rem;
-    padding-bottom: 1.1rem;
+.card {
+  padding: 1.25rem;
+  border-radius: $border-radius;
+  background-color: #ffffff;
+  box-shadow: $box-shadow;
 }
 
-.outlet {
-    margin: 1.5rem 1.5rem;
-    border-radius: $border-radius;
-    padding: 1.5rem;
-    background-color: #ffffff;
-    box-shadow: $box-shadow;
+.dropdown-menu {
+  border: none;
+  box-shadow: $box-shadow;
+}
+
+.dropstart .dropdown-menu {
+  left: -120px;
 }
 
 .nowrap {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 .bi {
-    width: 2rem;
-    font-size: 1.1rem;
-    vertical-align: middle;
+  width: 2rem;
+  font-size: 1.1rem;
+  vertical-align: middle;
 }
 
 .btn {
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 .btn,
 .form-control:not(textarea) {
-    height: 3rem;
+  height: 3rem;
 }
 
 .form-select {
- &:focus {
+  &:focus {
     box-shadow: none !important;
- }
+  }
 }
 
 .modal-content {
-    box-shadow: var(--box-shadow);
-    border-radius: var(--border-radius) !important;
+  box-shadow: var(--box-shadow);
+  border-radius: var(--border-radius) !important;
 }
 
 .show {
-    display: block !important;
+  display: block !important;
 }
 
 .table {
-    cursor: pointer;
-    user-select: none;
+  cursor: pointer;
+  user-select: none;
 }
 
 .table th {
-    font-weight: normal;
-    text-transform: uppercase;
+  font-weight: normal;
+  text-transform: uppercase;
 }
 
-.table tr:hover {
-    background-color: #0d152f1e !important;
+.table tbody tr:hover {
+  color: $secondary;
 }
 
 .table-dark th {
-    background-color: var(--primary) !important;
+  font-weight: normal;
+  background-color: $primary !important;
 }
 
 .lg-table tr {
-    line-height: 3.5rem;
-    min-height: 3.5rem;
-    height: 3.5rem;
+  line-height: 3.75rem;
+}
+
+.table td, .table th {
+  max-width: 8rem;
+}
+
+.search-box {
+  z-index: 110;
+  width: 100%;
+  top: -1px;
+  display: none;
+  left: 0px;
+}
+
+.srh-btn {
+  position: absolute;
+  top: 20px;
+  cursor: pointer;
+  right: 1.25rem;
+}
+
+.search-box .form-control {
+  border: none;
+  background-color: #ffffff !important;
+  transition: 0.2s ease-in;
+  height: 3.75rem;
 }
 
 @import "../node_modules/bootstrap/scss/bootstrap";
-@import url('https://fonts.googleapis.com/css2?family=Inter');
+@import url("https://fonts.googleapis.com/css2?family=Inter");

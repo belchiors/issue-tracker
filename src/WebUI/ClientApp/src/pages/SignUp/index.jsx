@@ -1,32 +1,34 @@
-import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import api from 'services/api';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "services/api";
 
-import './styles.css';
+import "./styles.css";
 
 function SignUp() {
-  const navigate = useNavigate()
-  const [ errors, setErrors ] = useState([]);
-  const emailRef = useRef();
-  const firstNameRef = useRef();
-  const lastNameRef = useRef();
-  const passwordRef = useRef();
-  const confirmPasswordRef = useRef();
-  
+  const navigate = useNavigate();
+  const [errors, setErrors] = useState([]);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (event) => {
+    event.preventDefault();
+    const { name, value } = event.target;
+    setFormData((values) => ({ ...values, [name]: value }));
+  };
+
   const onSubmit = async (event) => {
     event.preventDefault();
-    const data = {
-      firstName: firstNameRef.current.value,
-      lastName: lastNameRef.current.value,
-      email: emailRef.current.value,
-      password: passwordRef.current.value
-    };
-    await api.post('api/account/signup', data)
-      .then(response => {
+    await api
+      .post("api/account/signup", formData)
+      .then((response) => {
         // Redirect user to home page
-        navigate('/account/signin');
+        navigate("/account/signin");
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
@@ -43,19 +45,19 @@ function SignUp() {
           if (validationErrors != null) {
             const fieldErrors = [];
             for (let field in validationErrors) {
-              validationErrors[field].map(err => fieldErrors.push(err));
+              validationErrors[field].map((err) => fieldErrors.push(err));
             }
-            setErrors(fieldErrors)
+            setErrors(fieldErrors);
           }
         } else {
           alert(error.message);
         }
       });
-  }
+  };
 
   return (
     <div className="container-fluid">
-      <div className="outlet max-w-sm form-container">
+      <div className="card max-w-sm form-container">
         <a href="/">
           <img className="" src="" alt="" />
         </a>
@@ -64,53 +66,67 @@ function SignUp() {
         {errors.length > 0 && (
           <div className="alert alert-danger mt-3 px-4" role="alert">
             <ul className="list-group">
-              {errors.map(error => <li>{error}</li>)}
+              {errors.map((error) => (
+                <li>{error}</li>
+              ))}
             </ul>
           </div>
         )}
-        <form onSubmit={onSubmit} >
+        <form onSubmit={onSubmit}>
           <div className="row mt-3 mb-3">
             <div className="col-md-6 mb-1">
               <label className="col-form-label">First Name</label>
               <input
                 className="form-control"
                 type="text"
-                placeholder="Enter your first name"
-                ref={firstNameRef}
-                required />
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="col-md-6">
               <label className="col-form-label">Last Name</label>
               <input
                 className="form-control"
                 type="text"
-                placeholder="Enter your last name"
-                ref={lastNameRef} 
-                required />
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                required
+              />
             </div>
           </div>
           <div className="form-group">
             <label className="col-form-label">Email</label>
             <input
               className="form-control"
-              type="email" placeholder="Enter your email"
-              ref={emailRef} 
-              required />
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
           </div>
           <div className="form-group mt-3">
             <label className="col-form-label">Password</label>
             <input
               className="form-control"
               type="password"
-              placeholder="Enter your password"
-              ref={passwordRef} 
-              required />
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
           </div>
           <div className="mt-3">
-            <button className="btn btn-primary w-100 btn-block" type="submit">Sign Up</button>
+            <button className="btn btn-primary w-100 btn-block" type="submit">
+              Sign Up
+            </button>
           </div>
         </form>
-        <span className="mt-4 d-flex justify-content-center">Already have an account?&nbsp;
+        <span className="mt-4 d-flex justify-content-center">
+          Already have an account?&nbsp;
           <a className="" href="/account/signin">
             <span>Sign In</span>
           </a>

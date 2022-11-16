@@ -1,15 +1,21 @@
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { logout } from "services/auth";
 
-import { logout } from 'services/auth';
-
-import './styles.css';
+import "./styles.css";
 
 function SidePanel() {
+  const [showDropdown, setDropdown] = useState(false);
+
+  const toggleDropdown = () => {
+    setDropdown(!showDropdown);
+  };
+
   const onLogOut = () => {
     // Set token to null and reload page
     logout();
     window.location.reload(true);
-  }
+  };
 
   return (
     <aside className="side-panel">
@@ -19,27 +25,25 @@ function SidePanel() {
         </div>
       </div>
       <div className="flex-column">
-        <div className="panel-item">
-          <Link className="nav-link" to="/">
-            <i className="bi bi-kanban"></i> Home
-          </Link>
+        <div className="">
+          <div className="panel-item">
+            <Link className="nav-link" to="/">
+              <i className="bi bi-kanban"></i> Home
+            </Link>
+          </div>
+          <div className="panel-item">
+            <Link className="nav-link" to="/projects">
+              <i className="bi bi-hdd-stack"></i> Projects
+            </Link>
+          </div>
+          <div className="panel-item">
+            <Link className="nav-link" to="/issues">
+              <i className="bi bi-bug"></i> Issues
+            </Link>
+          </div>
         </div>
-        <div className="panel-item">
-          <Link className="nav-link" to="/projects">
-            <i className="bi bi-hdd-stack"></i> Projects
-          </Link>
-        </div>
-        <div className="panel-item">
-          <Link className="nav-link" to="/issues">
-            <i className="bi bi-bug"></i> Issues
-          </Link>
-        </div>
-      </div>
-      <div className="">
-        <div className="panel-item">
-          <Link className="nav-link" onClick={onLogOut}>
-            <i className="bi bi-box-arrow-in-right"></i> Sign Out
-          </Link>
+        <div className="sidebar-footer">
+          
         </div>
       </div>
     </aside>

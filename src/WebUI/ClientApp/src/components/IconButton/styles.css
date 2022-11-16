@@ -1,19 +1,19 @@
 .icon-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 48px;
-    width: 48px;
-    z-index: 9999;
-    border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  width: 48px;
+  z-index: 9999;
+  border-radius: 50%;
 }
 
 .btn-icon {
-    vertical-align: middle;
-    border: transparent;
-    background-color: transparent;
+  vertical-align: middle;
+  border: transparent;
+  background-color: transparent;
 }
 
 .icon-button:hover {
-    background-color: #e7e7e8;
+  background-color: #e7e7e8;
 }

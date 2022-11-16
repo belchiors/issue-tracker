@@ -1,26 +1,29 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from "react";
 
-import api from 'services/api';
+import api from "services/api";
 
 function ProjectEditor(props) {
-  const [ errors, setErrors ] = useState([]);
-  const nameRef = useRef();
-  const descRef = useRef();
-  const urlRef = useRef();
-  
+  const [errors, setErrors] = useState([]);
+  const [formData, setFormData] = useState({
+    name: "",
+    url: "",
+    description: "",
+  });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((values) => ({ ...values, [name]: value }));
+  };
+
   const onSubmit = async (event) => {
     event.preventDefault();
-    const data = {
-      name: nameRef.current.value,
-      url: urlRef.current.value,
-      description: descRef.current.value
-    };
-    await api.post('/api/projects/', data)
-      .then(response => {
+    await api
+      .post("/api/projects/", formData)
+      .then((response) => {
         props.onClose();
         window.location.reload(true);
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
@@ -37,22 +40,22 @@ function ProjectEditor(props) {
           if (validationErrors != null) {
             const fieldErrors = [];
             for (let field in validationErrors) {
-              validationErrors[field].map(err => fieldErrors.push(err));
+              validationErrors[field].map((err) => fieldErrors.push(err));
             }
-            setErrors(fieldErrors)
+            setErrors(fieldErrors);
           }
         } else {
           alert(error.message);
         }
       });
-  }
+  };
 
   const onClose = () => {
     props.onClose();
-  }
+  };
 
   return (
-    <div className={props.display ? 'modal modal-lg show' : 'modal'}>
+    <div className={props.display ? "modal modal-lg show" : "modal"}>
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
@@ -61,27 +64,59 @@ function ProjectEditor(props) {
           {errors.length > 0 && (
             <div className="alert alert-danger m-3 px-4" role="alert">
               <ul className="list-group">
-                {errors.map(error => <li>{error}</li>)}
+                {errors.map((error) => (
+                  <li>{error}</li>
+                ))}
               </ul>
             </div>
           )}
           <div className="modal-body">
-            <div className="form-group">
-              <label className="col-form-label">Name</label>
-              <input className="form-control" type="text" ref={nameRef} required />
-            </div>
-            <div className="form-group">
-              <label className="col-form-label">URL</label>
-              <input className="form-control" type="text" ref={urlRef} />
-            </div>
-            <div className="form-group">
-              <label className="col-form-label">Description</label>
-              <textarea className="form-control" rows="10" ref={descRef} required></textarea>
-            </div>
+            <form>
+              <div className="form-group">
+                <label className="col-form-label">Name</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label className="col-form-label">URL</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  name="url"
+                  value={formData.url}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="form-group">
+                <label className="col-form-label">Description</label>
+                <textarea
+                  className="form-control"
+                  rows="10"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  required
+                ></textarea>
+              </div>
+            </form>
           </div>
           <div className="modal-footer">
-            <button className="btn btn-primary" onClick={onSubmit}>Submit</button>
-            <button className="btn btn-secondary" type="button" onClick={onClose}>Close</button>
+            <button className="btn btn-primary" onClick={onSubmit}>
+              Submit
+            </button>
+            <button
+              className="btn btn-secondary"
+              type="button"
+              onClick={onClose}
+            >
+              Close
+            </button>
           </div>
         </div>
       </div>

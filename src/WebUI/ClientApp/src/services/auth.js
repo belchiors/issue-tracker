@@ -1,17 +1,22 @@
 function isAuthenticated() {
-    return localStorage.getItem('TOKEN_KEY') != null;
+  return localStorage.getItem("accessToken") != null;
+}
+
+function getCurrentUser() {
+  return localStorage.getItem("userRole");
 }
 
 function getToken() {
-    return localStorage.getItem('TOKEN_KEY');
+  return localStorage.getItem("accessToken");
 }
 
-function login(token) {
-    localStorage.setItem('TOKEN_KEY', token);
+function login(jwt) {
+  localStorage.setItem("accessToken", jwt.token);
+  localStorage.setItem("userRole", jwt.role);
 }
 
 function logout() {
-    localStorage.removeItem('TOKEN_KEY');
+  localStorage.clear();
 }
 
-export { isAuthenticated, getToken, login, logout };
+export { isAuthenticated, getCurrentUser, getToken, login, logout };
