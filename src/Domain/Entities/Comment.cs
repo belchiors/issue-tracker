@@ -10,11 +10,11 @@ namespace Domain.Entities
         public DateTime UpdatedAt { get; set; }
         
         // Navigation property that holds a reference to a single user entity
-        public Guid UserId { get; set; }
-        public User Author { get; set; }
+        public virtual Guid UserId { get; set; }
+        public virtual User Author { get; set; }
 
         // Navigation property that holds a reference to a single issue entity
-        public Guid IssueId { get; set; }
-        public Issue Issue { get; set; }
+        public virtual Guid IssueId { get; set; }
+        public virtual Issue Issue { get; set; }
     }
 }

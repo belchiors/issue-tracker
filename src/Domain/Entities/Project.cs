@@ -12,10 +12,10 @@ namespace Domain.Entities
         public DateTime CreatedAt { get; set; }
 
         // Navigation property that holds a reference to a single project manager
-        public Guid UserId { get; set; }
-        public User Manager { get; set; }
+        public virtual Guid UserId { get; set; }
+        public virtual User Manager { get; set; }
 
         // Navigation property that holds references to many related issues
-        public IEnumerable<Issue>? Issues { get; set; }
+        public virtual IEnumerable<Issue>? Issues { get; set; }
     }
 }

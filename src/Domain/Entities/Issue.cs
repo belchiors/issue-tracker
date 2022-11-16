@@ -16,17 +16,17 @@ namespace Domain.Entities
         public DateTime UpdatedAt { get; set; }
 
         // Navigation property that holds a reference to a single user entity
-        public Guid UserId { get; set; }
-        public User Reporter { get; set; }
+        public virtual Guid UserId { get; set; }
+        public virtual User Reporter { get; set; }
         
         // Navigation property that holds a reference to a single project entity
-        public Guid ProjectId { get; set; }
-        public Project Project { get; set; }
+        public virtual Guid ProjectId { get; set; }
+        public virtual Project Project { get; set; }
 
         // Navigation property that contains references to many assined users
-        public IEnumerable<User>? Assignees { get; set; }
+        public virtual IEnumerable<User>? Assignees { get; set; }
 
         // Navigation property that contains references to many related comments
-        public IEnumerable<Comment>? Comments { get; set; }
+        public virtual IEnumerable<Comment>? Comments { get; set; }
     }
 }

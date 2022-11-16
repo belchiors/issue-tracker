@@ -14,6 +14,6 @@ namespace Domain.Entities
         public string PasswordHash { get; set; }
         public UserRole Role { get; set; } = UserRole.User;
         // Navigation property that holds references to many assigned issues
-        public IEnumerable<Issue> AssignedIssues { get; set; }
+        public virtual IEnumerable<Issue> AssignedIssues { get; set; }
     }
 }
