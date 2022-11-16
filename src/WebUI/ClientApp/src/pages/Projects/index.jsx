@@ -47,12 +47,12 @@ function Projects() {
             {projects.map((project, index) => (
               <tr key={index} onClick={() => getIssues(project.id)}>
                 <td className="text-center">{index}</td>
-                <td className="text-center text-truncate">{project.name}</td>
+                <td className="text-truncate">{project.name}</td>
                 <td className="text-center">{project.issues}</td>
                 <td className="text-center">
                   {new Date(project.createdAt).toDateString()}
                 </td>
-                <td className="text-center text-truncate">
+                <td className="text-truncate">
                   {project.description}
                 </td>
                 <td className="text-center">

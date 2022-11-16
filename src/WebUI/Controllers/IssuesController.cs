@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Application.Contract;
@@ -21,16 +22,12 @@ public class IssuesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> Get([FromQuery] string? projectId)
     {
-        return Ok(await _issueService.GetAllIssuesAsync());
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] string projectId)
-    {
-        var issues = await _issueService.GetIssuesByProjectId(Guid.Parse(projectId));
-        return Ok(issues);
+        if (String.IsNullOrEmpty(projectId)) {
+            return Ok(await _issueService.GetAllIssuesAsync());
+        }
+        return Ok(await _issueService.GetIssuesByProjectId(Guid.Parse(projectId)));
     }
 
     [HttpPost]

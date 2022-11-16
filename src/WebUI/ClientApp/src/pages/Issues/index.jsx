@@ -37,13 +37,14 @@ function Issues(props) {
               <th>Priority</th>
               <th>Created</th>
               <th>Updated</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             {issues.map((issue, index) => (
               <tr key={index} onClick={() => alert(issue.id)}>
                 <td className="text-center">{index}</td>
-                <td className="text-center text-truncate">{issue.title}</td>
+                <td className="text-truncate">{issue.title}</td>
                 <td className="text-center">{issue.reporter}</td>
                 <td className="text-center">{issue.status}</td>
                 <td className="text-center">{issue.priority}</td>
@@ -53,12 +54,12 @@ function Issues(props) {
                 <td className="text-center">
                   {new Date(issue.updatedAt).toDateString()}
                 </td>
-                {/* <td className="text-center">
+                <td className="text-center">
                   <IconButton
                     variant={"bi bi-three-dots-vertical"}
                     onClick={() => alert("Not implemented yet")}
                   />
-                </td> */}
+                </td>
               </tr>
             ))}
           </tbody>

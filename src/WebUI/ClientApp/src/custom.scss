@@ -142,6 +142,11 @@ main {
   max-width: 8rem;
 }
 
+.table tr td:last-child {
+  width: 1%;
+  white-space: nowrap;
+}
+
 .search-box {
   z-index: 110;
   width: 100%;
