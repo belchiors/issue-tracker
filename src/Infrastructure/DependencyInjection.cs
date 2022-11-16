@@ -14,6 +14,7 @@ namespace Infrastructure
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 var version = new MySqlServerVersion(new Version(8, 0, 30));
+                options.UseLazyLoadingProxies();
                 options.UseMySql(connectionString, version, null);
             });
         }
