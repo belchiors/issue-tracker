@@ -58,7 +58,9 @@ public class IssueService
             Priority = IssuePriority.None,
             Status = IssueStatus.Open,
             UserId = Guid.Parse(userId),
-            ProjectId = Guid.Parse(dto.ProjectId)
+            ProjectId = Guid.Parse(dto.ProjectId),
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
         await _issueRepository.Insert(issue);
