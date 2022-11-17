@@ -32,7 +32,12 @@ public class AccountService
         var response = new JwtResponseDto
         {
             Token = _tokenService.GenerateToken(user),
-            Role = Enum.GetName(typeof(UserRole), user.Role)
+            User = new UserDto
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Role = Enum.GetName(typeof(UserRole), user.Role)
+            }
         };
         
         return response;
