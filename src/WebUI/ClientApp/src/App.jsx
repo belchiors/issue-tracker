@@ -4,8 +4,9 @@ import PermissionProvider from "utils/PermissionProvider";
 import { getCurrentUser } from "services/auth";
 
 function App() {
+  const user = getCurrentUser();
   return (
-    <PermissionProvider role={getCurrentUser()}>
+    <PermissionProvider role={user?.role}>
       <AppRoutes />
     </PermissionProvider>
   );

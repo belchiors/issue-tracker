@@ -3,7 +3,8 @@ function isAuthenticated() {
 }
 
 function getCurrentUser() {
-  return localStorage.getItem("userRole");
+  const data = localStorage.getItem("user");
+  return JSON.parse(data);
 }
 
 function getToken() {
@@ -12,7 +13,7 @@ function getToken() {
 
 function login(jwt) {
   localStorage.setItem("accessToken", jwt.token);
-  localStorage.setItem("userRole", jwt.role);
+  localStorage.setItem("user", JSON.stringify(jwt.user));
 }
 
 function logout() {

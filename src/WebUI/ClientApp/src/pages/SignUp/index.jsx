@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "services/api";
 
+import logo from 'assets/logo.png';
 import "./styles.css";
 
 function SignUp() {
@@ -57,12 +58,17 @@ function SignUp() {
 
   return (
     <div className="container-fluid">
-      <div className="card max-w-sm form-container">
+      <div className="d-flex align-items-center card max-w-sm form-container">
         <a href="/">
-          <img className="" src="" alt="" />
+          <img
+            src={logo}
+            width="96"
+            height="96"
+            alt=""
+          />
         </a>
-        <h1 className="text-center">Sign Up</h1>
-        <h6 className="text-center">Create a new account</h6>
+        <h4 className="mt-4 text-center">Create a new account</h4>
+        <h6>Welcome! Please enter your details.</h6>
         {errors.length > 0 && (
           <div className="alert alert-danger mt-3 px-4" role="alert">
             <ul className="list-group">
@@ -82,6 +88,7 @@ function SignUp() {
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleChange}
+                placeholder="First name"
                 required
               />
             </div>
@@ -93,6 +100,7 @@ function SignUp() {
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleChange}
+                placeholder="Last name"
                 required
               />
             </div>
@@ -105,6 +113,7 @@ function SignUp() {
               name="email"
               value={formData.email}
               onChange={handleChange}
+              placeholder="Enter your email"
               required
             />
           </div>
@@ -116,10 +125,11 @@ function SignUp() {
               name="password"
               value={formData.password}
               onChange={handleChange}
+              placeholder="Enter your password"
               required
             />
           </div>
-          <div className="mt-3">
+          <div className="mt-4">
             <button className="btn btn-primary w-100 btn-block" type="submit">
               Sign Up
             </button>
@@ -127,9 +137,7 @@ function SignUp() {
         </form>
         <span className="mt-4 d-flex justify-content-center">
           Already have an account?&nbsp;
-          <a className="" href="/account/signin">
-            <span>Sign In</span>
-          </a>
+          <a className="d-inline-block" href="/account/signin">Sign In</a>
         </span>
       </div>
     </div>

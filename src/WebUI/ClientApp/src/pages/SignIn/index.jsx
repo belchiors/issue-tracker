@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import api from "services/api";
 import { login } from "services/auth";
 
+import logo from 'assets/logo.png';
 import "./styles.css";
 
 function SignIn() {
@@ -57,22 +58,19 @@ function SignIn() {
       });
   };
 
-  const signInAsAdmin = () => {
-    alert("Not implemented yet");
-  };
-
-  const signInAsMember = () => {
-    alert("Note implemented yet");
-  };
-
   return (
     <div className="container-fluid">
       <div className="card max-w-sm form-container">
         <a href="/">
-          <img className="" src="" alt="" />
+          <img
+            src={logo}
+            width="96"
+            height="96"
+            alt=""
+          />
         </a>
-        <h1 className="text-center">Sign In</h1>
-        <h6 className="text-center">Log in to your account</h6>
+        <h4 className="mt-4 text-center">Log in to your account</h4>
+        <h6>Welcome back! Please enter your details.</h6>
         {errors.length > 0 && (
           <div className="alert alert-danger mt-3 px-4" role="alert">
             <ul className="list-group">
@@ -91,6 +89,7 @@ function SignIn() {
               name="email"
               value={formData.email}
               onChange={handleChange}
+              placeholder="Enter your email"
               required
             />
           </div>
@@ -102,28 +101,19 @@ function SignIn() {
               name="password"
               value={formData.password}
               onChange={handleChange}
+              placeholder="Enter your password"
               required
             />
           </div>
-          <div className="mt-3">
+          <div className="mt-4">
             <button className="btn btn-primary w-100 btn-block" type="submit">
               Sign In
             </button>
           </div>
         </form>
-        <div className="mt-4 d-flex justify-content-between">
-          <button className="btn btn-info" onClick={signInAsMember}>
-            Enter as Member
-          </button>
-          <button className="btn btn-info" onClick={signInAsAdmin}>
-            Enter as Admin
-          </button>
-        </div>
         <span className="mt-4 d-flex justify-content-center">
           Don't have an account?&nbsp;
-          <a className="" href="/account/signup">
-            <span>Sign Up</span>
-          </a>
+          <a className="d-inline-block" href="/account/signup">Sign Up</a>
         </span>
       </div>
     </div>

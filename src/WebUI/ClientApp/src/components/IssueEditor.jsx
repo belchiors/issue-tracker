@@ -76,7 +76,7 @@ function IssueEditor(props) {
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">New Issue</h5>
+            <h5 className="modal-title">Create a new issue</h5>
           </div>
           {errors.length > 0 && (
             <div className="alert alert-danger m-3 px-4" role="alert">

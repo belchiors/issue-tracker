@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import IssueEditor from "components/IssueEditor";
-import IconButton from "components/IconButton";
 import Spinner from "components/Spinner";
 
 import "./styles.css";
 import api from "services/api";
 
-function Issues(props) {
+function Issues() {
   const query = new URLSearchParams(useLocation().search);
   const [issues, setIssues] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,45 +25,38 @@ function Issues(props) {
 
   const renderIssuesTable = (issues) => {
     return (
-      <div className="card">
-        <table className="table lg-table nowrap">
-          <thead className="table-dark">
-            <tr className="text-center">
-              <th>No.</th>
-              <th>Title</th>
-              <th>Reporter</th>
-              <th>Status</th>
-              <th>Priority</th>
-              <th>Created</th>
-              <th>Updated</th>
-              <th></th>
+      <table className="table">
+        <thead className="table-light">
+          <tr className="">
+            <th className="text-center">#</th>
+            <th className="text-center">Title</th>
+            <th className="text-center">Reporter</th>
+            <th className="text-center">Status</th>
+            <th className="text-center">Priority</th>
+            <th className="text-center">Created</th>
+            <th className="text-center">Updated</th>
+          </tr>
+        </thead>
+        <tbody>
+          {issues.map((issue, index) => (
+            <tr key={index}>
+              <td className="text-center">{index}</td>
+              <td className="text-truncate">
+                <Link to="/">{issue.title}</Link>
+              </td>
+              <td className="text-center">{issue.reporter}</td>
+              <td className="text-center">{issue.status}</td>
+              <td className="text-center">{issue.priority}</td>
+              <td className="text-center">
+                {new Date(issue.createdAt).toDateString()}
+              </td>
+              <td className="text-center">
+                {new Date(issue.updatedAt).toDateString()}
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {issues.map((issue, index) => (
-              <tr key={index} onClick={() => alert(issue.id)}>
-                <td className="text-center">{index}</td>
-                <td className="text-truncate">{issue.title}</td>
-                <td className="text-center">{issue.reporter}</td>
-                <td className="text-center">{issue.status}</td>
-                <td className="text-center">{issue.priority}</td>
-                <td className="text-center">
-                  {new Date(issue.createdAt).toDateString()}
-                </td>
-                <td className="text-center">
-                  {new Date(issue.updatedAt).toDateString()}
-                </td>
-                <td className="text-center">
-                  <IconButton
-                    variant={"bi bi-three-dots-vertical"}
-                    onClick={() => alert("Not implemented yet")}
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
     );
   };
 
@@ -73,22 +65,46 @@ function Issues(props) {
     populateTableData(qs);
   }, []);
 
-  return (
+  return loading ? <Spinner /> : (
     <>
       <IssueEditor display={modalState} onClose={handleModal} />
-      <div className="d-flex justify-content-between align-items-center py-3">
-        <h5>Issues</h5>
+      <div className="toolbar">
+        <h4 className="title">Issues</h4>
         <div className="">
           <button
             type="button"
             className="btn btn-primary"
             onClick={handleModal}
           >
-            Submit Issue
+            Create Issue
           </button>
         </div>
       </div>
-      {loading ? <Spinner /> : renderIssuesTable(issues)}
+      <div className="data-table">
+        <div className="data-table-header"></div>
+        <div className="data-table-body table-responsive">
+          {renderIssuesTable(issues)}
+        </div>
+        <div className="data-table-footer">
+          <ul className="pagination pagination-sm justify-content-end">
+            <li className="page-item disabled">
+              <a className="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            <li className="page-item">
+              <a className="page-link" href="#">1</a>
+            </li>
+            <li className="page-item">
+              <a className="page-link" href="#">2</a>
+            </li>
+            <li className="page-item">
+              <a className="page-link" href="#">3</a>
+            </li>
+            <li className="page-item">
+              <a className="page-link" href="#">Next</a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </>
   );
 }

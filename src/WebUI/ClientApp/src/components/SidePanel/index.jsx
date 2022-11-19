@@ -19,31 +19,26 @@ function SidePanel() {
 
   return (
     <aside className="side-panel">
-      <div className="side-panel-header ps-3">
-        <div className="container-fluid">
-          <h1 className="panel-title">Issue Tracker</h1>
-        </div>
-      </div>
       <div className="flex-column">
-        <div className="">
+        <div className="panel-menu">
           <div className="panel-item">
             <Link className="nav-link" to="/">
-              <i className="bi bi-kanban"></i> Home
+              <i className="bi bi-kanban-fill"></i>
+              <span>Home</span>
             </Link>
           </div>
           <div className="panel-item">
             <Link className="nav-link" to="/projects">
-              <i className="bi bi-hdd-stack"></i> Projects
+              <i className="bi bi-hdd-stack-fill"></i>
+              <span>Projects</span>
             </Link>
           </div>
           <div className="panel-item">
             <Link className="nav-link" to="/issues">
-              <i className="bi bi-bug"></i> Issues
+              <i className="bi bi-bug-fill"></i>
+              <span>Issues</span>
             </Link>
           </div>
-        </div>
-        <div className="sidebar-footer">
-          
         </div>
       </div>
     </aside>
