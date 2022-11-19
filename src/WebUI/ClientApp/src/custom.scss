@@ -16,7 +16,7 @@ $danger: #f44336;
 $light: #f9f9f7;
 $dark: #1d2d4a;
 
-$body-bg: #ffffff;
+$body-bg: #fdfdfd;
 $body-color: #4c4f53;
 
 $border-radius: 0.25rem;
@@ -36,20 +36,8 @@ $box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
   box-sizing: border-box;
 }
 
-html,
 body {
   font-family: "Inter", sans-serif !important;
-}
-
-main {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-}
-
-.content {
-  flex: 1 0 auto; /* enable grow, disable shrink */
-  max-width: 100%;
 }
 
 .navbar {
@@ -100,13 +88,20 @@ main {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1rem;
-  padding-left: 0.5rem;
-  padding-right: 1.5rem;
-  padding-top: 1rem;
+}
+
+.toolbar .title {
+  margin-bottom: 0;
 }
 
 .data-table-footer {
-  padding: 0 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.paginator-container ul {
+  margin-bottom: 0;
 }
 
 .table thead tr:first-child {
@@ -119,6 +114,10 @@ main {
 
 .table-light th {
   background-color:  #f8f9fa !important;
+}
+
+.table-hover tbody tr:hover {
+  cursor: pointer;
 }
 
 @import "../node_modules/bootstrap/scss/bootstrap";

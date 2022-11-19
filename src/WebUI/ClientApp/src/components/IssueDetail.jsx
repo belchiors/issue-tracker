@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import api from "services/api";
 import Restricted from "utils/Restricted";
+import IconButton from "components/IconButton";
 
-function IssueEditor(props) {
+function IssueDetail(props) {
   const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    priority: null,
-    status: null,
-    projectId: "",
-    assignees: [],
+    title: props.issue?.title,
+    description: props.issue?.description,
+    priority: props.issue?.priority,
+    status: props.issue?.status,
+    assignees: [props.issue?.assignees],
   });
 
-  const [projects, setProjects] = useState([]);
+  const [members, setMembers] = useState([]);
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -61,22 +61,24 @@ function IssueEditor(props) {
     setFormData((values) => ({ ...values, [name]: value }));
   };
 
-  const populateProjectsList = async () => {
+  const populateMembers = async () => {
     const response = await api.get("api/projects");
     const data = response.data;
-    setProjects(data);
+    setMembers(data);
   };
 
-  useEffect(() => {
-    populateProjectsList();
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <div className={props.display ? "modal modal-lg show" : "modal"}>
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Create a new issue</h5>
+            <h5 className="modal-title">Detail</h5>
+            <IconButton
+              variant="bi bi-trash3"
+              onClick={() => alert("Delete?")}
+            />
           </div>
           {errors.length > 0 && (
             <div className="alert alert-danger m-3 px-4" role="alert">
@@ -88,31 +90,36 @@ function IssueEditor(props) {
             </div>
           )}
           <div className="modal-body">
-            <form>
-              <div className="form-group">
-                <label className="col-form-label">Title</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="title"
-                  value={formData.title}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label className="col-form-label">Description</label>
-                <textarea
-                  className="form-control"
-                  rows="10"
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  required
-                ></textarea>
-              </div>
-              <div className="form-details">
-                <Restricted to={"Admin"}>
+            <div className="title mb-3">
+              <h4 className="title">{props.issue?.title}</h4>
+            </div>
+            <div className="form-group">
+              <textarea
+                className="form-control"
+                rows="10"
+                name="description"
+                value={props.issue?.description}
+                readOnly={true}
+              ></textarea>
+            </div>
+            <div className="form-details">
+              <Restricted to={"Admin"}>
+                <form>
+                  <div className="form-group">
+                    <label className="col-form-label">Assign Member</label>
+                    <select
+                      className="form-select"
+                      value={formData.assignees}
+                      onChange={handleChange}
+                    >
+                      <option value="">-- Assign Member --</option>
+                      {members.map((member) => (
+                        <option value={member?.id}>
+                          {`${member?.firstName} ${member?.lastName}`}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                   <div className="form-group">
                     <div className="group-label">
                       <label className="col-form-label">Priority</label>
@@ -162,33 +169,20 @@ function IssueEditor(props) {
                       <label className="form-check-label">Major</label>
                     </div>
                   </div>
-                </Restricted>
-                <div className="form-group">
-                  <label className="col-form-label">Project</label>
-                  <select
-                    className="form-select"
-                    name="projectId"
-                    value={formData.projectId}
-                    onChange={handleChange}
-                    required
-                  >
-                    <option value="">-- Select Project --</option>
-                    {projects.map((project) => (
-                      <option value={project.id}>{project.name}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </form>
+                </form>
+              </Restricted>
+            </div>
           </div>
           <div className="modal-footer">
-            <button
-              className="btn btn-primary"
-              type="button"
-              onClick={onSubmit}
-            >
-              Submit
-            </button>
+            <Restricted to={"Admin"}>
+              <button
+                className="btn btn-primary"
+                type="button"
+                onClick={onSubmit}
+              >
+                Save changes
+              </button>
+            </Restricted>
             <button
               className="btn btn-secondary"
               type="button"
@@ -203,4 +197,4 @@ function IssueEditor(props) {
   );
 }
 
-export default IssueEditor;
+export default IssueDetail;

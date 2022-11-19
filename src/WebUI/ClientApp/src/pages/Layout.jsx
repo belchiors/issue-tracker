@@ -1,7 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import NavMenu from 'components/NavMenu';
-import SidePanel from "components/SidePanel";
 
 function Layout() {
 
@@ -9,10 +8,9 @@ function Layout() {
     <>
       <NavMenu />
       <main className="page">
-        <SidePanel />
-        <section className="content">
+        <div className="container my-3">
           <Outlet />
-        </section>
+        </div>
       </main>
     </>
   );

@@ -13,7 +13,7 @@ function NavMenu() {
 
   return (
     <nav className="navbar navbar-expand sticky-top px-4 navbar-dark">
-      <div className="container-fluid">
+      <div className="container">
         <a className="navbar-brand" href="/">
           <img
             className="d-inline-block align-middle"
@@ -25,26 +25,39 @@ function NavMenu() {
           />
           <h5 className="d-inline-block">IssueTracker</h5>
         </a>
-        <ul className="navbar-nav float-end">
-          <li className="nav-item">
-            <div className="dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                type="button"
-                onClick={toggleDropdown}
-              >
-                {`${user?.firstName} ${user?.lastName}`}
-              </a>
-              {showDropdown ? (
-                <div className="dropdown-menu position-absolute show">
-                  <a className="dropdown-item" href="/" onClick={logout}>
-                    Sign Out
-                  </a>
-                </div>
-              ) : null}
-            </div>
-          </li>
-        </ul>
+        <div className="d-flex collapse navbar-collapse justify-content-between">
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <a className="nav-link" href="/">Dashboard</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/projects">Projects</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/issues">Issues</a>
+            </li>
+          </ul>
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <div className="dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  type="button"
+                  onClick={toggleDropdown}
+                >
+                  {`${user?.firstName} ${user?.lastName}`}
+                </a>
+                {showDropdown ? (
+                  <div className="dropdown-menu position-absolute show">
+                    <a className="dropdown-item" href="/" onClick={logout}>
+                      Sign Out
+                    </a>
+                  </div>
+                ) : null}
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
   );
