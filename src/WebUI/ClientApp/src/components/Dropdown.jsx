@@ -12,8 +12,8 @@ function Dropdown(props) {
       {props.children}
       {shouldOpen ? (
         <div className="dropdown-menu show">
-          {props.menu.map((item) => (
-            <div className="dropdown-item">{item}</div>
+          {props.menu.map((item, index) => (
+            <div key={index} className="dropdown-item">{item}</div>
           ))}
         </div>
       ) : null}

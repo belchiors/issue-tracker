@@ -3,13 +3,16 @@ import Restricted from "utils/Restricted";
 
 import api from "services/api";
 
-function IssueEditor(props) {
+function IssueEditor({ issue, display, onClose }) {
   const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
-    summary: props.issue?.summary,
-    description: props.issue?.description,
-    projectId: props.issue?.projectId,
-    assignee: props.issue?.assignee?.id,
+    id: "",
+    summary: "",
+    description: "",
+    priority: "",
+    status: "",
+    projectId: "",
+    assignee: "",
   });
 
   const [projects, setProjects] = useState([]);
@@ -17,11 +20,10 @@ function IssueEditor(props) {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
     await api
-      .post("/api/issues", formData)
+      .put("/api/issues", formData)
       .then((response) => {
-        props.onClose();
+        onClose();
         window.location.reload(true);
       })
       .catch((error) => {
@@ -51,10 +53,6 @@ function IssueEditor(props) {
       });
   };
 
-  const onClose = () => {
-    props.onClose();
-  };
-
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((values) => ({ ...values, [name]: value }));
@@ -67,7 +65,7 @@ function IssueEditor(props) {
   };
 
   const populateMembers = async () => {
-    const response = await api.get("api/assignee");
+    const response = await api.get("api/users");
     const data = response.data;
     setMembers(data);
   };
@@ -78,7 +76,7 @@ function IssueEditor(props) {
   }, []);
 
   return (
-    <div className={props.display ? "modal modal-lg show" : "modal"}>
+    <div className={display ? "modal modal-lg show" : "modal"}>
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
@@ -100,7 +98,7 @@ function IssueEditor(props) {
                 <input
                   type="text"
                   className="form-control"
-                  name="title"
+                  name="summary"
                   value={formData.summary}
                   onChange={handleChange}
                   required
@@ -184,7 +182,7 @@ function IssueEditor(props) {
                     </select>
                   </div>
                 </Restricted>
-                {props.issue !== null ? (
+                {issue?.id !== null ? (
                   <div className="form-group">
                     <label className="col-form-label">Project</label>
                     <select

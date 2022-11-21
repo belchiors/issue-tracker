@@ -24,34 +24,22 @@ public class IssuesController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] string? projectId)
     {
-        if (String.IsNullOrEmpty(projectId)) {
-            return Ok(await _issueService.GetAllIssuesAsync());
-        }
-        return Ok(await _issueService.GetIssuesByProjectId(Guid.Parse(projectId)));
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] IssueRequestDto dto)
-    {
-        // Get current logged in user name identifier
-        var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        await _issueService.CreateNewIssue(dto, userId);
-        return Created("", dto);
+        return Ok(await _issueService.GetIssuesAsync(projectId));
     }
 
     [HttpPut]
     [Authorize(Roles="Admin,Member")]
-    public async Task<IActionResult> Update([FromBody] IssueResponseDto dto)
+    public async Task<IActionResult> Create([FromBody] IssueRequestDto dto)
     {
         // Get current logged in user name identifier
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        await _issueService.UpdateIssue(dto, userId);
+        await _issueService.CreateOrUpdateAsync(dto, userId);
         return Ok();
     }
     
     [HttpDelete]
     [Authorize(Roles="Admin")]
-    public async Task<IActionResult> Delete(string issueId)
+    public async Task<IActionResult> Delete([FromBody] string issueId)
     {
         await _issueService.DeleteIssue(issueId);
         return Ok();

@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import api from "services/api";
 
 import logo from 'assets/logo.png';
-import "./styles.css";
 
 function SignUp() {
   const navigate = useNavigate();

@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
 
 import DataTable from "components/DataTable";
-import Spinner from "components/Spinner";
 import Restricted from "utils/Restricted";
 import ProjectEditor from "components/ProjectEditor";
 
 import api from "services/api";
-import "./styles.css";
 
 const columns = [
-  { label: "Name", field: "name" },
   {
-    label: "Issues",
-    field: "issues",
+    label: "Name",
+    field: "name"
   },
   {
     label: "Created",
@@ -45,7 +42,9 @@ function Projects() {
     populateTableData();
   }, []);
 
-  return loading ? <Spinner /> : (
+  return loading ? <div className="d-flex justify-content-center">
+      <div className="loader spinner-grow" role="status"></div>
+    </div> : (
     <>
       <Restricted to={"Admin"}>
         <ProjectEditor display={modalState} onClose={handleModal} />

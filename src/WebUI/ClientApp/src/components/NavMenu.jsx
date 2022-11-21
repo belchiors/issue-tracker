@@ -13,7 +13,6 @@ function NavMenu() {
         <a className="navbar-brand" href="/">
           <img
             className="d-inline-block align-middle"
-            style={{ "margin-right": "1rem" }}
             src={logo}
             width="30"
             height="30"

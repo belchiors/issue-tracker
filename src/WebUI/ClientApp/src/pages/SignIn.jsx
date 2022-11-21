@@ -5,7 +5,6 @@ import api from "services/api";
 import { login } from "services/auth";
 
 import logo from 'assets/logo.png';
-import "./styles.css";
 
 function SignIn() {
   const navigate = useNavigate();

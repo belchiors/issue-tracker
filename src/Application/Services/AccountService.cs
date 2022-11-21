@@ -62,7 +62,7 @@ public class AccountService
         _logger.LogInformation("User created with success");
     }
 
-    public async Task<IEnumerable<UserDto>> GetAllMembersAsync()
+    public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
     {
         var members = await _userRepository.FindAll(user => user.Role.Equals(UserRole.Member));
         return members.Select(user => new UserDto

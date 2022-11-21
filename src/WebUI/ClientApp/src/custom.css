@@ -34,7 +34,14 @@ body {
   margin-bottom: 1rem;
 }
 
-.bi-btn {
+.loader {
+  left: 50%;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+}
+
+.bi-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,6 +54,25 @@ body {
   border-radius: 50%;
 }
 
-.bi-btn:hover {
+.bi-button:hover {
   background-color: #e5e5e5;
+}
+
+.max-w-sm {
+  max-width: 24rem;
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 8rem auto 0;
+}
+
+.form-container form {
+  width: 100%;
+}
+
+.navbar-brand img {
+  margin-right: 1rem !important;
 }

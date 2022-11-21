@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from "react";
 
 import DataTable from "components/DataTable";
-import Spinner from "components/Spinner";
-import Dropdown from "components/Dropdown";
-
 import IssueEditor from "components/IssueEditor";
 
 import api from "services/api";
 
 function Issues() {
   const [issues, setIssues] = useState([]);
-  const [selectedIssue, setSelectedIssue] = useState({});
+  const [selectedIssue, setSelectedIssue] = useState(null);
   const [loading, setLoading] = useState(true);
   const [modalState, setModalState] = useState(false);
 
@@ -46,14 +43,14 @@ function Issues() {
       label: "Action",
       render: (issue) => (
         <div className="d-flex flex-row">
-          <span onClick={() => handleModal(issue)}>
-            <i className="bi bi-btn bi-eye"></i>
+          <span onClick={() => console.log()}>
+            <i className="bi bi-button bi-eye"></i>
           </span>
           <span  onClick={() => handleModal(issue)}>
-            <i className="bi bi-btn bi-pencil-square"></i>
+            <i className="bi bi-button bi-pencil-square"></i>
           </span>
           <span onClick={() => deleteIssue(issue.id)}>
-            <i className="bi bi-btn bi-trash3"></i>
+            <i className="bi bi-button bi-trash3"></i>
           </span>
         </div>
       ),
@@ -67,7 +64,7 @@ function Issues() {
 
   const deleteIssue = async (issueId) => {
     if (window.confirm("Delete issue? This action cannot be undone."))
-      await api.delete("api/issues", issueId);
+      await api.delete("api/issues", {issueId: issueId});
   };
 
   const populateTableData = async () => {
@@ -82,13 +79,15 @@ function Issues() {
   }, []);
 
   return loading ? (
-    <Spinner />
+    <div className="d-flex justify-content-center">
+      <div className="loader spinner-grow" role="status"></div>
+    </div>
   ) : (
     <>
       <IssueEditor
         issue={selectedIssue}
         display={modalState}
-        onClose={handleModal}
+        onClose={() => handleModal(null)}
       />
       <div className="toolbar">
         <h4 className="title">Issues</h4>
@@ -96,7 +95,7 @@ function Issues() {
           <button
             type="button"
             className="btn btn-primary"
-            onClick={handleModal}
+            onClick={() => handleModal(null)}
           >
             Create Issue
           </button>
