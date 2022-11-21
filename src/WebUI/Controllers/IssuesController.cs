@@ -38,4 +38,22 @@ public class IssuesController : ControllerBase
         await _issueService.CreateNewIssue(dto, userId);
         return Created("", dto);
     }
+
+    [HttpPut]
+    [Authorize(Roles="Admin,Member")]
+    public async Task<IActionResult> Update([FromBody] IssueResponseDto dto)
+    {
+        // Get current logged in user name identifier
+        var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        await _issueService.UpdateIssue(dto, userId);
+        return Ok();
+    }
+    
+    [HttpDelete]
+    [Authorize(Roles="Admin")]
+    public async Task<IActionResult> Delete(string issueId)
+    {
+        await _issueService.DeleteIssue(issueId);
+        return Ok();
+    }
 }

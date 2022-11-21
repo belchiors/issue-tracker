@@ -31,15 +31,15 @@ namespace Infrastructure.Persistence
                 .Property(p => p.Description)
                 .IsRequired(false);
 
-            // Explicity defines url description as optional
+            // Explicity defines project repository url as optional
             modelBuilder.Entity<Project>()
                 .Property(p => p.Url)
                 .IsRequired(false);
 
-            // An issue can be assigned to many users, each user can be assigned to many issues.
+            // An issue can be assigned to a single user, each user can be assigned to many issues.
             modelBuilder.Entity<Issue>()
-                .HasMany(i => i.Assignees)
-                .WithMany(u => u.AssignedIssues);
+                .HasOne(i => i.Assignee)
+                .WithMany();
 
             // An issue is reported by one user, each user may report many issues.
             modelBuilder.Entity<Issue>()

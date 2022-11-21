@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
-import api from "services/api";
 import Restricted from "utils/Restricted";
+
+import api from "services/api";
 
 function IssueEditor(props) {
   const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    priority: null,
-    status: null,
-    projectId: "",
-    assignees: [],
+    summary: props.issue?.summary,
+    description: props.issue?.description,
+    projectId: props.issue?.projectId,
+    assignee: props.issue?.assignee?.id,
   });
 
   const [projects, setProjects] = useState([]);
+  const [members, setMembers] = useState([]);
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -52,7 +52,6 @@ function IssueEditor(props) {
   };
 
   const onClose = () => {
-    console.log("Cleaning form");
     props.onClose();
   };
 
@@ -67,8 +66,15 @@ function IssueEditor(props) {
     setProjects(data);
   };
 
+  const populateMembers = async () => {
+    const response = await api.get("api/assignee");
+    const data = response.data;
+    setMembers(data);
+  };
+
   useEffect(() => {
     populateProjectsList();
+    populateMembers();
   }, []);
 
   return (
@@ -90,12 +96,12 @@ function IssueEditor(props) {
           <div className="modal-body">
             <form>
               <div className="form-group">
-                <label className="col-form-label">Title</label>
+                <label className="col-form-label">Sumary</label>
                 <input
                   type="text"
                   className="form-control"
                   name="title"
-                  value={formData.title}
+                  value={formData.summary}
                   onChange={handleChange}
                   required
                 />
@@ -162,22 +168,39 @@ function IssueEditor(props) {
                       <label className="form-check-label">Major</label>
                     </div>
                   </div>
+                  <div className="form-group">
+                    <label className="col-form-label">Assign Member</label>
+                    <select
+                      className="form-select"
+                      value={formData.assignee}
+                      onChange={handleChange}
+                    >
+                      <option value="">-- Assign Member --</option>
+                      {members.map((member) => (
+                        <option value={member?.id}>
+                          {`${member?.firstName} ${member?.lastName}`}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </Restricted>
-                <div className="form-group">
-                  <label className="col-form-label">Project</label>
-                  <select
-                    className="form-select"
-                    name="projectId"
-                    value={formData.projectId}
-                    onChange={handleChange}
-                    required
-                  >
-                    <option value="">-- Select Project --</option>
-                    {projects.map((project) => (
-                      <option value={project.id}>{project.name}</option>
-                    ))}
-                  </select>
-                </div>
+                {props.issue !== null ? (
+                  <div className="form-group">
+                    <label className="col-form-label">Project</label>
+                    <select
+                      className="form-select"
+                      name="projectId"
+                      value={formData.projectId}
+                      onChange={handleChange}
+                      required
+                    >
+                      <option value="">-- Select Project --</option>
+                      {projects.map((project) => (
+                        <option value={project.id}>{project.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                ) : null}
               </div>
             </form>
           </div>

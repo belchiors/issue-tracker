@@ -1,90 +1,95 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import IssueEditor from "components/IssueEditor";
-import Spinner from "components/Spinner";
 
-import "./styles.css";
+import DataTable from "components/DataTable";
+import Spinner from "components/Spinner";
+import Dropdown from "components/Dropdown";
+
+import IssueEditor from "components/IssueEditor";
+
 import api from "services/api";
-import IssueDetail from "components/IssueDetail";
 
 function Issues() {
-  const query = new URLSearchParams(useLocation().search);
   const [issues, setIssues] = useState([]);
+  const [selectedIssue, setSelectedIssue] = useState({});
   const [loading, setLoading] = useState(true);
-
-  // Modal state modifiers
   const [modalState, setModalState] = useState(false);
-  const [modalDetailState, setDetailModalState] = useState(false);
-  const [ detailData, setDetailModalData ] = useState(null);
 
-  const handleModal = () => {
+  const columns = [
+    {
+      label: "Summary",
+      field: "summary",
+    },
+    {
+      label: "Reporter",
+      field: "reporter",
+      render: ({ reporter }) => `${reporter.firstName} ${reporter.lastName}`,
+    },
+    {
+      label: "Status",
+      field: "status",
+    },
+    {
+      label: "Priority",
+      field: "priority",
+    },
+    {
+      label: "Created",
+      field: "createdAt",
+      render: ({ createdAt }) => new Date(createdAt).toDateString(),
+    },
+    {
+      label: "Updated",
+      field: "updatedAt",
+      render: ({ updatedAt }) => new Date(updatedAt).toDateString(),
+    },
+    {
+      label: "Action",
+      render: (issue) => (
+        <div className="d-flex flex-row">
+          <span onClick={() => handleModal(issue)}>
+            <i className="bi bi-btn bi-eye"></i>
+          </span>
+          <span  onClick={() => handleModal(issue)}>
+            <i className="bi bi-btn bi-pencil-square"></i>
+          </span>
+          <span onClick={() => deleteIssue(issue.id)}>
+            <i className="bi bi-btn bi-trash3"></i>
+          </span>
+        </div>
+      ),
+    },
+  ];
+
+  const handleModal = (issue) => {
+    setSelectedIssue(issue);
     setModalState(!modalState);
   };
 
-  const handleDetailModal = () => {
-    setDetailModalState(!modalDetailState);
-  }
+  const deleteIssue = async (issueId) => {
+    if (window.confirm("Delete issue? This action cannot be undone."))
+      await api.delete("api/issues", issueId);
+  };
 
-  const populateTableData = async (qs) => {
-    const response = await api.get(`api/issues${qs && "?" + qs}`);
+  const populateTableData = async () => {
+    const response = await api.get(`api/issues`);
     const data = response.data;
     setIssues(data);
     setLoading(false);
   };
 
-  const renderIssuesTable = (issues) => {
-    return (
-      <table className="table table-hover table-bordered">
-        <thead className="table-light">
-          <tr className="">
-            <th className="text-center">#</th>
-            <th className="text-center">Title</th>
-            <th className="text-center">Reporter</th>
-            <th className="text-center">Status</th>
-            <th className="text-center">Priority</th>
-            <th className="text-center">Created</th>
-            <th className="text-center">Updated</th>
-          </tr>
-        </thead>
-        <tbody>
-          {issues.map((issue, index) => (
-            <tr key={index} onClick={() => {
-              setDetailModalData(issue);
-              handleDetailModal();
-            }}>
-              <td className="text-center">{index}</td>
-              <td className="text-truncate">{issue.title}</td>
-              <td className="text-center">{issue.reporter}</td>
-              <td className="text-center">{issue.status}</td>
-              <td className="text-center">{issue.priority}</td>
-              <td className="text-center">
-                {new Date(issue.createdAt).toDateString()}
-              </td>
-              <td className="text-center">
-                {new Date(issue.updatedAt).toDateString()}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  };
-
   useEffect(() => {
-    const qs = query.toString();
-    populateTableData(qs);
+    populateTableData();
   }, []);
 
   return loading ? (
     <Spinner />
   ) : (
     <>
-      <IssueDetail
-        issue={detailData}
-        display={modalDetailState}
-        onClose={handleDetailModal}
+      <IssueEditor
+        issue={selectedIssue}
+        display={modalState}
+        onClose={handleModal}
       />
-      <IssueEditor display={modalState} onClose={handleModal} />
       <div className="toolbar">
         <h4 className="title">Issues</h4>
         <div className="">
@@ -97,34 +102,10 @@ function Issues() {
           </button>
         </div>
       </div>
-      <div className="data-table">
-        <div className="data-table-header"></div>
-        <div className="data-table-body table-responsive">
-          {renderIssuesTable(issues)}
-        </div>
-        <div className="data-table-footer">
-          <div>Showing 1 to 50 of {issues.length} entries</div>
-          <div className="paginator-container">
-            <ul className="pagination pagination-sm justify-content-end">
-              <li className="page-item disabled">
-                <a className="page-link" href="#" tabindex="-1">Previous</a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">1</a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">2</a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">3</a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">Next</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <DataTable
+        columns={columns}
+        dataSource={issues}
+      />
     </>
   );
 }

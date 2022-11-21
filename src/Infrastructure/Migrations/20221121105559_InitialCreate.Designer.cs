@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221114193001_AddRoleToUsers")]
-    partial class AddRoleToUsers
+    [Migration("20221121105559_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -58,6 +58,9 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid?>("AssigneeId")
+                        .HasColumnType("char(36)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -70,24 +73,26 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid>("ReporterId")
+                        .HasColumnType("char(36)");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Summary")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("AssigneeId");
 
                     b.HasIndex("ProjectId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ReporterId");
 
                     b.ToTable("Issues");
                 });
@@ -154,21 +159,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("IssueUser", b =>
-                {
-                    b.Property<Guid>("AssignedIssuesId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("AssigneesId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("AssignedIssuesId", "AssigneesId");
-
-                    b.HasIndex("AssigneesId");
-
-                    b.ToTable("IssueUser");
-                });
-
             modelBuilder.Entity("Domain.Entities.Comment", b =>
                 {
                     b.HasOne("Domain.Entities.Issue", "Issue")
@@ -190,6 +180,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Issue", b =>
                 {
+                    b.HasOne("Domain.Entities.User", "Assignee")
+                        .WithMany()
+                        .HasForeignKey("AssigneeId");
+
                     b.HasOne("Domain.Entities.Project", "Project")
                         .WithMany("Issues")
                         .HasForeignKey("ProjectId")
@@ -198,9 +192,11 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Domain.Entities.User", "Reporter")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("ReporterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Assignee");
 
                     b.Navigation("Project");
 
@@ -216,21 +212,6 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Manager");
-                });
-
-            modelBuilder.Entity("IssueUser", b =>
-                {
-                    b.HasOne("Domain.Entities.Issue", null)
-                        .WithMany()
-                        .HasForeignKey("AssignedIssuesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("AssigneesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.Issue", b =>

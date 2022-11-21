@@ -8,7 +8,7 @@ function Layout() {
     <>
       <NavMenu />
       <main className="page">
-        <div className="container my-3">
+        <div className="container-fluid px-5 my-3">
           <Outlet />
         </div>
       </main>

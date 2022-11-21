@@ -8,7 +8,7 @@ namespace Domain.Entities
     public class Issue
     {
         public Guid Id { get; set; }
-        public string Title { get; set; }
+        public string Summary { get; set; }
         public string Description { get; set; }
         public IssuePriority Priority { get; set; }
         public IssueStatus Status { get; set; }
@@ -16,15 +16,16 @@ namespace Domain.Entities
         public DateTime UpdatedAt { get; set; }
 
         // Navigation property that holds a reference to a single user entity
-        public virtual Guid UserId { get; set; }
+        public virtual Guid ReporterId { get; set; }
         public virtual User Reporter { get; set; }
         
         // Navigation property that holds a reference to a single project entity
         public virtual Guid ProjectId { get; set; }
         public virtual Project Project { get; set; }
 
-        // Navigation property that contains references to many assined users
-        public virtual IEnumerable<User>? Assignees { get; set; }
+        // Navigation property that contains reference to a single assignee
+        public virtual Guid? AssigneeId { get; set; }
+        public virtual User? Assignee { get; set; }
 
         // Navigation property that contains references to many related comments
         public virtual IEnumerable<Comment>? Comments { get; set; }
