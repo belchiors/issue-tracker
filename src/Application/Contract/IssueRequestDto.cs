@@ -4,7 +4,7 @@ namespace Application.Contract;
 
 public class IssueRequestDto
 {
-    public string? Id { get; set; }
+    public int? Id { get; set; }
     [Required] public string Summary { get; set; }
     [Required] public string Description { get; set; }
     public string? Priority { get; set; }
@@ -12,5 +12,5 @@ public class IssueRequestDto
     public DateTime? CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
     [Required] public string ProjectId { get; set; }
-    public string? AssigneeId { get; set; }
+    public int? AssigneeId { get; set; }
 }

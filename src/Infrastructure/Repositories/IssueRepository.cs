@@ -19,7 +19,7 @@ public class IssueRepository : IIssueRepository
         _dbContext = dbContext;
     }
 
-    public async Task<Issue?> FindById(Guid id)
+    public async Task<Issue?> FindById(int id)
     {
         return await _dbContext.Issues.FindAsync(id);
     }

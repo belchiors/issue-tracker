@@ -19,7 +19,7 @@ public class ProjectRepository : IProjectRepository
         _dbContext = dbContext;
     }
     
-    public async Task<Project?> FindById(Guid id)
+    public async Task<Project?> FindById(int id)
     {
         return await _dbContext.Projects.FindAsync(id);
     }

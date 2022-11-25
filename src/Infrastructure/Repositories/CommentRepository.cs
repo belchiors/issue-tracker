@@ -19,7 +19,7 @@ public class CommentRepository : IRepository<Comment>
         _dbContext = dbContext;
     }
 
-    public Task<Comment?> FindById(Guid id)
+    public Task<Comment?> FindById(int id)
     {
         throw new NotImplementedException();
     }
