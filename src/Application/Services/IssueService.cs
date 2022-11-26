@@ -1,4 +1,5 @@
 using Application.Contract;
+using Application.Exceptions;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Enums;
@@ -26,7 +27,15 @@ public class IssueService
         return issues.Select(issue => _mapper.Map<IssueResponseDto>(issue));
     }
 
-    public async Task<IEnumerable<IssueResponseDto>> GetIssuesByProjectIdAsync(int projectId)
+    public async Task<IssueResponseDto> GetByIdAsync(int issueId)
+    {
+        var issue = await _issueRepository.FindById(issueId);
+        if (issue == null)
+            throw new NotFoundException<Issue>();
+        return _mapper.Map<IssueResponseDto>(issue);
+    }
+
+    public async Task<IEnumerable<IssueResponseDto>> GetByProjectIdAsync(int projectId)
     {
         var issues = await _issueRepository.FindAll(issue => issue.ProjectId.Equals(projectId));
         return issues.Select(issue => _mapper.Map<IssueResponseDto>(issue));
