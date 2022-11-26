@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Restricted from "utils/Restricted";
 
 import api from "services/api";
 
 function IssueEditor() {
   const navigate = useNavigate();
+  const { issueId } = useParams();
   const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
     id: null,
-    summary: "",
-    description: "",
-    priority: "",
+    summary: null,
+    description: null,
+    priority: null,
     status: null,
     projectId: null,
     assigneeId: null,
@@ -71,10 +72,21 @@ function IssueEditor() {
     const data = response.data;
     setMembers(data);
   };
+  
+  const fetchIssue = async (issueId) => {
+    const response = await api.get(`api/issues/${issueId}`)
+    const data = response.data;
+    console.log(data);
+    setFormData(data);
+  }
 
   useEffect(() => {
     fetchProjects();
     fetchMembers();
+    
+    // Fetch and populate formData for editor mode
+    if (issueId != null)
+      fetchIssue(issueId);
   }, []);
 
   return (
