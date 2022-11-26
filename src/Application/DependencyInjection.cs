@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text;
 using Application.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -14,6 +15,13 @@ public static class DependencyInjection
         services.AddScoped<ProjectService>();
         services.AddScoped<IssueService>();
 
+        return services;
+    }
+
+    public static IServiceCollection ConfigureAutoMapper(this IServiceCollection services, params Assembly[] assemblies)
+    {
+        services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+        
         return services;
     }
     
