@@ -27,10 +27,18 @@ public class IssuesController : ControllerBase
         return Ok(await _issueService.GetAllIssuesAsync());
     }
 
-    [HttpGet("{projectId}")]
-    public async Task<IActionResult> Get(int projectId)
+    [HttpGet("{issueId}")]
+    public async Task<IActionResult> Get(int issueId)
     {
-        return Ok(await _issueService.GetIssuesByProjectIdAsync(projectId));
+        try
+        {
+            var issue = await _issueService.GetByIdAsync(issueId);
+            return Ok(issue);
+        }
+        catch (Exception e)
+        {
+            return NotFound(e.Message);
+        }
     }
 
     [HttpPost]
@@ -41,4 +49,13 @@ public class IssuesController : ControllerBase
         await _issueService.CreateAsync(dto, Convert.ToInt32(userId));
         return Created("", dto);
     }
+
+    [HttpDelete("{issueId}")]
+    [Authorize]
+    public async Task<IActionResult> Delete(int issueId)
+    {
+        await _issueService.DeleteIssue(issueId);
+        return Ok();
+    }
+    
 }
