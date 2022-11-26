@@ -1,4 +1,5 @@
 using Application.Contract;
+using AutoMapper;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Interfaces;
@@ -10,80 +11,44 @@ public class IssueService
 {
     private readonly ILogger<IssueService> _logger;
     private readonly IIssueRepository _issueRepository;
+    private readonly IMapper _mapper;
 
-    public IssueService(ILogger<IssueService> logger, IIssueRepository issueRepository)
+    public IssueService(ILogger<IssueService> logger, IIssueRepository issueRepository, IMapper mapper)
     {
         _logger = logger;
+        _mapper = mapper;
         _issueRepository = issueRepository;
     }
-
-    public async Task<IEnumerable<IssueResponseDto>> GetIssuesAsync(string? projectId)
+    
+    public async Task<IEnumerable<IssueResponseDto>> GetAllIssuesAsync()
     {
-        IEnumerable<Issue>? issues;
-        
-        if (!String.IsNullOrEmpty(projectId))
-            issues = await _issueRepository.FindAll(issue => issue.ProjectId.Equals(projectId));
-        else
-            issues = await _issueRepository.FindAll();
-        
-        return issues.Select(issue => new IssueResponseDto
-        {
-            Id = issue.Id.ToString(),
-            Summary = issue.Summary,
-            Description = issue.Description,
-            Priority = Enum.GetName(typeof(IssuePriority), issue.Priority),
-            Status = Enum.GetName(typeof(IssueStatus), issue.Status),
-            CreatedAt = issue.CreatedAt,
-            UpdatedAt = issue.UpdatedAt,
-            Project = new ProjectResponseDto
-            {
-                Name = issue.Project.Name,
-                Url = issue.Project.Url,
-                Description = issue.Project.Description,
-                CreatedAt = issue.Project.CreatedAt
-            },
-            Reporter = new UserDto
-            {
-                FirstName = issue.Reporter.FirstName,
-                LastName = issue.Reporter.LastName,
-            },
-            Assignee = new UserDto
-            {
-                FirstName = issue.Assignee?.FirstName,
-                LastName = issue.Assignee?.LastName
-            }
-        });
+        var issues = await _issueRepository.FindAll();
+        return issues.Select(issue => _mapper.Map<IssueResponseDto>(issue));
     }
 
-    public async Task CreateOrUpdateAsync(IssueRequestDto dto, string userId)
+    public async Task<IEnumerable<IssueResponseDto>> GetIssuesByProjectIdAsync(int projectId)
     {
-        var issue = new Issue
-        {
-            Summary = dto.Summary,
-            Description = dto.Description,
-            Priority = IssuePriority.None,
-            Status = IssueStatus.Open,
-            ReporterId = Guid.Parse(userId),
-            ProjectId = Guid.Parse(dto.ProjectId),
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow,
-        };
-        
-        if (dto.Priority != null)
-            issue.Priority = (IssuePriority) Enum.Parse(typeof(IssuePriority), dto.Priority);
+        var issues = await _issueRepository.FindAll(issue => issue.ProjectId.Equals(projectId));
+        return issues.Select(issue => _mapper.Map<IssueResponseDto>(issue));
+    }
 
-        if (dto.Status != null)
-            issue.Status = (IssueStatus) Enum.Parse(typeof(IssueStatus), dto.Status);
+    public async Task CreateAsync(IssueRequestDto dto, int userId)
+    {
+        var issue = _mapper.Map<Issue>(dto);
+        issue.ReporterId = userId;
+        await _issueRepository.Insert(issue);
+    }
 
-        if (!String.IsNullOrEmpty(dto.AssigneeId))
-            issue.AssigneeId = Guid.Parse(dto.AssigneeId);
-
+    public async Task UpdateAsync(IssueRequestDto dto, int userId)
+    {
+        var issue = _mapper.Map<Issue>(dto);
+        issue.ReporterId = userId;
         await _issueRepository.Update(issue);
     }
 
-    public async Task DeleteIssue(string issueId)
+    public async Task DeleteIssue(int issueId)
     {
-        var issue = await _issueRepository.FindById(Guid.Parse(issueId));
+        var issue = await _issueRepository.FindById(issueId);
         await _issueRepository.Delete(issue);
     }
 }

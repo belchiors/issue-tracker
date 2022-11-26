@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Application.Exceptions;
 using Application.Contract;
+using AutoMapper;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Interfaces;
@@ -14,10 +15,15 @@ public class AccountService
     private readonly ILogger<AccountService> _logger;
     private readonly IUserRepository _userRepository;
     private readonly TokenService _tokenService;
+    private readonly IMapper _mapper;
     
-    public AccountService(ILogger<AccountService> logger, IUserRepository userRepository, TokenService tokenService)
+    public AccountService(ILogger<AccountService> logger,
+        IUserRepository userRepository,
+        TokenService tokenService,
+        IMapper mapper)
     {
         _logger = logger;
+        _mapper = mapper;
         _userRepository = userRepository;
         _tokenService = tokenService;
     }
@@ -29,15 +35,10 @@ public class AccountService
         if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
             throw new UserNotFoundException();
 
-        var response = new JwtResponseDto
+        var response = new JwtResponseDto()
         {
             Token = _tokenService.GenerateToken(user),
-            User = new UserDto
-            {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Role = Enum.GetName(typeof(UserRole), user.Role)
-            }
+            User = _mapper.Map<UserDto>(user)
         };
         
         return response;
@@ -46,30 +47,20 @@ public class AccountService
     public async Task CreateNewUser(SignUpDto dto)
     {
         var user = await _userRepository.FindByEmail(dto.Email);
-        
         if (user != null)
             throw new UserConflictException();
 
-        var passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
-        await _userRepository.Insert(new User
-        {
-            FirstName = dto.FirstName,
-            LastName = dto.LastName,
-            Email = dto.Email,
-            PasswordHash = passwordHash
-        });
+        var hash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+        var newUser = _mapper.Map<User>(dto);
+        newUser.PasswordHash = hash;
         
+        await _userRepository.Insert(newUser);
         _logger.LogInformation("User created with success");
     }
 
     public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
     {
         var members = await _userRepository.FindAll(user => user.Role.Equals(UserRole.Member));
-        return members.Select(user => new UserDto
-        {
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            Role = user.Role.ToString(),
-        });
+        return members.Select(user => _mapper.Map<UserDto>(user));
     }
 }

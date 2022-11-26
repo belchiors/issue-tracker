@@ -1,4 +1,5 @@
 using Application.Contract;
+using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -9,40 +10,26 @@ public class ProjectService
 {
     private readonly ILogger<ProjectService> _logger;
     private readonly IProjectRepository _repository;
+    private readonly IMapper _mapper;
 
-    public ProjectService(ILogger<ProjectService> logger, IProjectRepository repository)
+    public ProjectService(ILogger<ProjectService> logger, IProjectRepository repository, IMapper mapper)
     {
         _logger = logger;
+        _mapper = mapper;
         _repository = repository;
     }
 
     public async Task<IEnumerable<ProjectResponseDto>> GetAllProjectsAsync()
     {
-        var items = await _repository.FindAll();
-        return items.Select((item) => new ProjectResponseDto
-        {
-            Id = item.Id,
-            Name = item.Name,
-            Description = item.Description,
-            Url = item.Url,
-            CreatedAt = item.CreatedAt,
-            Issues = item.Issues?.Count() ?? 0
-        });
+        var projects = await _repository.FindAll();
+        return projects.Select(project => _mapper.Map<ProjectResponseDto>(project));
     }
 
-    public async Task CreateProjectAsync(ProjectRequestDto dto, string userId)
+    public async Task CreateProjectAsync(ProjectRequestDto dto, int userId)
     {
-        var entity = new Project
-        {
-            Name = dto.Name,
-            Description = dto.Description,
-            CreatedAt = DateTime.UtcNow,
-            Url = dto.Url,
-            UserId = Guid.Parse(userId)
-        };
-
-        await _repository.Insert(entity);
-        
-        _logger.LogInformation("Project entity created with success");
+        var project = _mapper.Map<Project>(dto);
+        project.UserId = userId;
+        project.CreatedAt = DateTime.UtcNow;
+        await _repository.Insert(project);
     }
 }
