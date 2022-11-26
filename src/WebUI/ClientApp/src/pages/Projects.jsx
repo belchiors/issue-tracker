@@ -62,7 +62,7 @@ function Projects() {
         <Restricted to={"Admin"}>
           <Link
             className="btn btn-primary"
-            to="/projects/new"
+            to="/projects/edit"
           >
             Create Project
           </Link>
