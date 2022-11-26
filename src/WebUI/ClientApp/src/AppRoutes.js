@@ -29,8 +29,9 @@ function AppRoutes() {
         <Route index path="" element={<PrivateRoute><Home /></PrivateRoute>} />
         <Route path="issues" element={<PrivateRoute><Issues /></PrivateRoute>} />
         <Route path="projects" element={<PrivateRoute><Projects /></PrivateRoute>} />
-        <Route path="issues/new" element={<PrivateRoute><IssueEditor /></PrivateRoute>} />
-        <Route path="projects/new" element={<PrivateRoute><ProjectEditor /></PrivateRoute>} />
+        <Route path="issues/edit" element={<PrivateRoute><IssueEditor /></PrivateRoute>} />
+        <Route path="issues/edit/:issueId" element={<PrivateRoute><IssueEditor /></PrivateRoute>} />
+        <Route path="projects" element={<PrivateRoute><ProjectEditor /></PrivateRoute>} />
       </Route>
       <Route path="/account">
         <Route path="signin" element={<SignIn />} />
