@@ -19,7 +19,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("signin")]
-    public async Task<IActionResult> SignIn([FromBody] SignInDto dto)
+    public async Task<IActionResult> SignIn(SignInDto dto)
     {
         try
         {
@@ -33,7 +33,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("signup")]
-    public async Task<IActionResult> SignUp([FromBody] SignUpDto dto)
+    public async Task<IActionResult> SignUp(SignUpDto dto)
     {
         try
         {

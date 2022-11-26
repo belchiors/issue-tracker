@@ -24,6 +24,7 @@ builder.Services.AddDbContext(connectionString);
 builder.Services.AddInfrastructureServices();
 builder.Services.AddApplicationServices();
 builder.Services.ConfigureAuthenticationServices(securityKey);
+builder.Services.ConfigureAutoMapper(typeof(Program).Assembly);
 
 var app = builder.Build();
 

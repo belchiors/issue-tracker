@@ -20,28 +20,25 @@ public class IssuesController : ControllerBase
     {
         _issueService = issueService;
     }
-
+    
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] string? projectId)
+    public async Task<IActionResult> Get()
     {
-        return Ok(await _issueService.GetIssuesAsync(projectId));
+        return Ok(await _issueService.GetAllIssuesAsync());
     }
 
-    [HttpPut]
-    [Authorize(Roles="Admin,Member")]
-    public async Task<IActionResult> Create([FromBody] IssueRequestDto dto)
+    [HttpGet("{projectId}")]
+    public async Task<IActionResult> Get(int projectId)
+    {
+        return Ok(await _issueService.GetIssuesByProjectIdAsync(projectId));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(IssueRequestDto dto)
     {
         // Get current logged in user name identifier
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        await _issueService.CreateOrUpdateAsync(dto, userId);
-        return Ok();
-    }
-    
-    [HttpDelete]
-    [Authorize(Roles="Admin")]
-    public async Task<IActionResult> Delete([FromBody] string issueId)
-    {
-        await _issueService.DeleteIssue(issueId);
-        return Ok();
+        await _issueService.CreateAsync(dto, Convert.ToInt32(userId));
+        return Created("", dto);
     }
 }

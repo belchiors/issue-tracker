@@ -33,8 +33,7 @@ public class ProjectsController : ControllerBase
     {
         // Get current logged in user name identifier
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        
-        await _service.CreateProjectAsync(dto, userId!);
+        await _service.CreateProjectAsync(dto, Convert.ToInt32(userId));
         return Created("", dto);
     }
 }

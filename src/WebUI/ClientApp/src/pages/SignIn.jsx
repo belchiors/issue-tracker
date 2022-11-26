@@ -68,10 +68,12 @@ function SignIn() {
             alt=""
           />
         </a>
-        <h4 className="mt-4 text-center">Log in to your account</h4>
+        <h4 className="mt-4 text-center">
+          Log in to your account
+        </h4>
         <h6>Welcome back! Please enter your details.</h6>
         {errors.length > 0 && (
-          <div className="alert alert-danger mt-3 px-4" role="alert">
+          <div className="alert alert-danger mt-3 px-4">
             <ul className="list-group">
               {errors.map((error) => (
                 <li>{error}</li>
@@ -81,7 +83,9 @@ function SignIn() {
         )}
         <form onSubmit={onSubmit}>
           <div className="form-group mt-3">
-            <label className="col-form-label">Email</label>
+            <label className="col-form-label">
+              Email
+            </label>
             <input
               className="form-control"
               type="email"
@@ -93,7 +97,9 @@ function SignIn() {
             />
           </div>
           <div className="form-group mt-3">
-            <label className="col-form-label">Password</label>
+            <label className="col-form-label">
+              Password
+            </label>
             <input
               className="form-control"
               type="password"
@@ -105,14 +111,19 @@ function SignIn() {
             />
           </div>
           <div className="mt-4">
-            <button className="btn btn-primary w-100 btn-block" type="submit">
+            <button
+              className="btn btn-primary w-100"
+              type="submit"
+            >
               Sign In
             </button>
           </div>
         </form>
         <span className="mt-4 d-flex justify-content-center">
           Don't have an account?&nbsp;
-          <a className="d-inline-block" href="/account/signup">Sign Up</a>
+          <a className="d-inline-block" href="/account/signup">
+            Sign Up
+          </a>
         </span>
       </div>
     </div>

@@ -3,16 +3,20 @@ import { Outlet } from "react-router-dom";
 import NavMenu from 'components/NavMenu';
 
 function Layout() {
-
   return (
-    <>
-      <NavMenu />
-      <main className="page">
-        <div className="container-fluid px-5 my-3">
-          <Outlet />
+    <div className="page">
+      <div className="sidebar">
+          <NavMenu />
+      </div>
+      <main>
+        <div className="top-row px-4">
+          
         </div>
+        <article className="content px-4">
+          <Outlet />
+        </article>
       </main>
-    </>
+    </div>
   );
 }
 

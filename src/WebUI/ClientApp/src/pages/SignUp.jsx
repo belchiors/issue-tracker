@@ -57,7 +57,7 @@ function SignUp() {
 
   return (
     <div className="container-fluid">
-      <div className="d-flex align-items-center card max-w-sm form-container">
+      <div className="card max-w-sm form-container">
         <a href="/">
           <img
             src={logo}
@@ -66,10 +66,12 @@ function SignUp() {
             alt=""
           />
         </a>
-        <h4 className="mt-4 text-center">Create a new account</h4>
+        <h4 className="mt-4 text-center">
+          Create a new account
+        </h4>
         <h6>Welcome! Please enter your details.</h6>
         {errors.length > 0 && (
-          <div className="alert alert-danger mt-3 px-4" role="alert">
+          <div className="alert alert-danger mt-3 px-4">
             <ul className="list-group">
               {errors.map((error) => (
                 <li>{error}</li>
@@ -80,7 +82,9 @@ function SignUp() {
         <form onSubmit={onSubmit}>
           <div className="row mt-3 mb-3">
             <div className="col-md-6 mb-1">
-              <label className="col-form-label">First Name</label>
+              <label className="col-form-label">
+                First Name
+              </label>
               <input
                 className="form-control"
                 type="text"
@@ -92,7 +96,9 @@ function SignUp() {
               />
             </div>
             <div className="col-md-6">
-              <label className="col-form-label">Last Name</label>
+              <label className="col-form-label">
+                Last Name
+              </label>
               <input
                 className="form-control"
                 type="text"
@@ -105,7 +111,9 @@ function SignUp() {
             </div>
           </div>
           <div className="form-group">
-            <label className="col-form-label">Email</label>
+            <label className="col-form-label">
+              Email
+            </label>
             <input
               className="form-control"
               type="email"
@@ -117,7 +125,9 @@ function SignUp() {
             />
           </div>
           <div className="form-group mt-3">
-            <label className="col-form-label">Password</label>
+            <label className="col-form-label">
+              Password
+            </label>
             <input
               className="form-control"
               type="password"
@@ -129,14 +139,19 @@ function SignUp() {
             />
           </div>
           <div className="mt-4">
-            <button className="btn btn-primary w-100 btn-block" type="submit">
+            <button 
+              className="btn btn-primary w-100"
+              type="submit"
+            >
               Sign Up
             </button>
           </div>
         </form>
         <span className="mt-4 d-flex justify-content-center">
           Already have an account?&nbsp;
-          <a className="d-inline-block" href="/account/signin">Sign In</a>
+          <a className="d-inline-block" href="/account/signin">
+            Sign In
+          </a>
         </span>
       </div>
     </div>

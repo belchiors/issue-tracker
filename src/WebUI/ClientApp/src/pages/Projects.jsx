@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 
 import DataTable from "components/DataTable";
 import Restricted from "utils/Restricted";
-import ProjectEditor from "components/ProjectEditor";
+import ProjectEditor from "pages/ProjectEditor";
 
 import api from "services/api";
+import { Link } from "react-router-dom";
 
 const columns = [
   {
@@ -12,9 +13,19 @@ const columns = [
     field: "name"
   },
   {
+    label: "URL",
+    field: "url",
+    render: ({url}) => <a href={url}>{url}</a>
+  },
+  {
     label: "Created",
     field: "createdAt",
-    render: (date) => new Date(date).toDateString(),
+    render: ({createdAt}) => 
+      new Date(createdAt).toDateString(),
+  },
+  {
+    label: "Issues",
+    field: "issues"
   },
   {
     label: "Description",
@@ -25,13 +36,9 @@ const columns = [
 function Projects() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [modalState, setModalState] = useState(false);
 
-  const handleModal = () => {
-    setModalState(!modalState);
-  };
 
-  const populateTableData = async () => {
+  const populateDataTable = async () => {
     const response = await api.get("api/projects");
     const data = response.data;
     setProjects(data);
@@ -39,34 +46,34 @@ function Projects() {
   };
 
   useEffect(() => {
-    populateTableData();
+    populateDataTable();
   }, []);
 
-  return loading ? <div className="d-flex justify-content-center">
-      <div className="loader spinner-grow" role="status"></div>
-    </div> : (
+  return loading ? (
+    <div className="loading-spinner">
+      <div class="spinner-border text-primary"></div>
+    </div>
+  ) : (
     <>
-      <Restricted to={"Admin"}>
-        <ProjectEditor display={modalState} onClose={handleModal} />
-      </Restricted>
-      <div className="toolbar">
-        <h4 className="title">Projects</h4>
+      <div className="page-header">
+        <h4 className="title">
+          Projects
+        </h4>
         <Restricted to={"Admin"}>
-          <div className="">
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={handleModal}
-            >
-              Create Project
-            </button>
-          </div>
+          <Link
+            className="btn btn-primary"
+            to="/projects/new"
+          >
+            Create Project
+          </Link>
         </Restricted>
       </div>
-      <DataTable
-        columns={columns}
-        dataSource={projects}
-      />
+      <div className="table-responsive">
+        <DataTable
+          columns={columns}
+          dataSource={projects}
+        />
+      </div>
     </>
   );
 }

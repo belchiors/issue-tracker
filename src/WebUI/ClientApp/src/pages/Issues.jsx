@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import DataTable from "components/DataTable";
-import IssueEditor from "components/IssueEditor";
 
 import api from "services/api";
 
 function Issues() {
   const [issues, setIssues] = useState([]);
-  const [selectedIssue, setSelectedIssue] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [modalState, setModalState] = useState(false);
 
   const columns = [
     {
@@ -19,7 +17,16 @@ function Issues() {
     {
       label: "Reporter",
       field: "reporter",
-      render: ({ reporter }) => `${reporter.firstName} ${reporter.lastName}`,
+      render: ({ reporter }) => 
+        `${reporter.firstName} ${reporter.lastName}`,
+    },
+    {
+      label: "Assignee",
+      field: "assignee",
+      render: ({ assignee }) =>
+        assignee
+          ? `${assignee?.firstName} ${assignee?.lastName}`
+          : "Undefined",
     },
     {
       label: "Status",
@@ -32,42 +39,18 @@ function Issues() {
     {
       label: "Created",
       field: "createdAt",
-      render: ({ createdAt }) => new Date(createdAt).toDateString(),
+      render: ({ createdAt }) => 
+        new Date(createdAt).toDateString(),
     },
     {
       label: "Updated",
       field: "updatedAt",
-      render: ({ updatedAt }) => new Date(updatedAt).toDateString(),
-    },
-    {
-      label: "Action",
-      render: (issue) => (
-        <div className="d-flex flex-row">
-          <span onClick={() => console.log()}>
-            <i className="bi bi-button bi-eye"></i>
-          </span>
-          <span  onClick={() => handleModal(issue)}>
-            <i className="bi bi-button bi-pencil-square"></i>
-          </span>
-          <span onClick={() => deleteIssue(issue.id)}>
-            <i className="bi bi-button bi-trash3"></i>
-          </span>
-        </div>
-      ),
+      render: ({ updatedAt }) => 
+        new Date(updatedAt).toDateString(),
     },
   ];
 
-  const handleModal = (issue) => {
-    setSelectedIssue(issue);
-    setModalState(!modalState);
-  };
-
-  const deleteIssue = async (issueId) => {
-    if (window.confirm("Delete issue? This action cannot be undone."))
-      await api.delete("api/issues", {issueId: issueId});
-  };
-
-  const populateTableData = async () => {
+  const populateDataTable = async () => {
     const response = await api.get(`api/issues`);
     const data = response.data;
     setIssues(data);
@@ -75,36 +58,27 @@ function Issues() {
   };
 
   useEffect(() => {
-    populateTableData();
+    populateDataTable();
   }, []);
 
   return loading ? (
-    <div className="d-flex justify-content-center">
-      <div className="loader spinner-grow" role="status"></div>
+    <div className="loading-spinner">
+      <div class="spinner-border text-primary"></div>
     </div>
   ) : (
     <>
-      <IssueEditor
-        issue={selectedIssue}
-        display={modalState}
-        onClose={() => handleModal(null)}
-      />
-      <div className="toolbar">
+      <div className="page-header">
         <h4 className="title">Issues</h4>
-        <div className="">
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={() => handleModal(null)}
-          >
-            Create Issue
-          </button>
-        </div>
+        <Link className="btn btn-primary" to="/issues/new">
+          Report Issue
+        </Link>
       </div>
-      <DataTable
-        columns={columns}
-        dataSource={issues}
-      />
+      <div className="table-responsive">
+        <DataTable
+          columns={columns}
+          dataSource={issues}
+        />
+      </div>
     </>
   );
 }
