@@ -11,9 +11,9 @@ public class AutoMapperProfile : Profile
     {
         CreateMap<IssueRequestDto, Issue>()
             .ForMember(dest => dest.Priority, map =>
-                map.MapFrom(src => (IssuePriority) Enum.ToObject(typeof(IssuePriority), src.Priority)))
+                map.MapFrom(src => (IssuePriority) Enum.Parse(typeof(IssuePriority), src.Priority)))
             .ForMember(dest => dest.Status, map =>
-            map.MapFrom(src => (IssueStatus) Enum.ToObject(typeof(IssueStatus), src.Status)));
+            map.MapFrom(src => (IssueStatus) Enum.Parse(typeof(IssueStatus), src.Status)));
         
         CreateMap<Issue, IssueResponseDto>()
             .ForMember(dest => dest.Priority, map =>
