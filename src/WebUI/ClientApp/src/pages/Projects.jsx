@@ -51,7 +51,7 @@ function Projects() {
 
   return loading ? (
     <div className="loading-spinner">
-      <div class="spinner-border text-primary"></div>
+      <div className="spinner-border text-primary"></div>
     </div>
   ) : (
     <>
