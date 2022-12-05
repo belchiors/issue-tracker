@@ -20,11 +20,12 @@ public class IssuesController : ControllerBase
     {
         _issueService = issueService;
     }
-    
+
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> Get(int? reportedBy, int? assignedTo)
     {
-        return Ok(await _issueService.GetAllIssuesAsync());
+        var issues = await _issueService.GetAllIssuesAsync(reportedBy, assignedTo);
+        return Ok(issues);
     }
 
     [HttpGet("{issueId}")]
@@ -51,11 +52,19 @@ public class IssuesController : ControllerBase
     }
 
     [HttpDelete("{issueId}")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int issueId)
     {
         await _issueService.DeleteIssue(issueId);
         return Ok();
     }
-    
+
+    [HttpPut]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Update(IssueRequestDto dto)
+    {
+        var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        await _issueService.UpdateAsync(dto, Convert.ToInt32(userId));
+        return Ok();
+    }
 }

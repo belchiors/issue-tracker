@@ -21,9 +21,20 @@ public class IssueService
         _issueRepository = issueRepository;
     }
     
-    public async Task<IEnumerable<IssueResponseDto>> GetAllIssuesAsync()
+    public async Task<IEnumerable<IssueResponseDto>> GetAllIssuesAsync(int? reporterId, int? assigneeId)
     {
         var issues = await _issueRepository.FindAll();
+
+        if (reporterId != null || assigneeId != null)
+        {
+            // convert issues to queryable and filter by reporter or assignee
+            issues = issues.AsQueryable();
+            if (reporterId != null)
+                issues = issues.Where(issue => issue.ReporterId.Equals(reporterId));
+            if (assigneeId != null)
+                issues = issues.Where(issue => issue.AssigneeId.Equals(assigneeId));
+        }
+
         return issues.Select(issue => _mapper.Map<IssueResponseDto>(issue));
     }
 
@@ -52,6 +63,7 @@ public class IssueService
     {
         var issue = _mapper.Map<Issue>(dto);
         issue.ReporterId = userId;
+        issue.UpdatedAt = DateTime.UtcNow;
         await _issueRepository.Update(issue);
     }
 
