@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 import DataTable from "components/DataTable";
+import Restricted from "utils/Restricted";
 
 import api from "services/api";
 
 function Issues() {
+  const [searchParams] = useSearchParams();
   const [issues, setIssues] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -13,12 +15,14 @@ function Issues() {
     {
       label: "Summary",
       field: "summary",
+      render: ({ id, summary }) => (
+        <Link to={`/issues/${id}`}>{`${summary}`}</Link>
+      ),
     },
     {
       label: "Reporter",
       field: "reporter",
-      render: ({ reporter }) => 
-        `${reporter.firstName} ${reporter.lastName}`,
+      render: ({ reporter }) => `${reporter.firstName} ${reporter.lastName}`,
     },
     {
       label: "Assignee",
@@ -26,7 +30,7 @@ function Issues() {
       render: ({ assignee }) =>
         assignee
           ? `${assignee?.firstName} ${assignee?.lastName}`
-          : "Undefined",
+          : "Unassigned",
     },
     {
       label: "Status",
@@ -39,19 +43,31 @@ function Issues() {
     {
       label: "Created",
       field: "createdAt",
-      render: ({ createdAt }) => 
-        new Date(createdAt).toDateString(),
+      render: ({ createdAt }) => new Date(createdAt).toDateString(),
     },
     {
       label: "Updated",
       field: "updatedAt",
-      render: ({ updatedAt }) => 
-        new Date(updatedAt).toDateString(),
+      render: ({ updatedAt }) => new Date(updatedAt).toDateString(),
+    },
+    {
+      label: "Project",
+      render: ({ project }) => `${project.name}`,
+    },
+    {
+      label: "Action",
+      render: ({ id }) => (
+        <Restricted to={"Admin"}>
+          <Link className="action" to={`/issues/edit/${id}`}>
+            <i className="bi bi-pencil-square"></i>
+          </Link>
+        </Restricted>
+      ),
     },
   ];
 
   const populateDataTable = async () => {
-    const response = await api.get(`api/issues`);
+    const response = await api.get(`api/issues?${searchParams.toString()}`);
     const data = response.data;
     setIssues(data);
     setLoading(false);
@@ -63,21 +79,18 @@ function Issues() {
 
   return loading ? (
     <div className="loading-spinner">
-      <div class="spinner-border text-primary"></div>
+      <div className="spinner-border text-primary"></div>
     </div>
   ) : (
     <>
       <div className="page-header">
         <h4 className="title">Issues</h4>
-        <Link className="btn btn-primary" to="/issues/new">
+        <Link className="btn btn-primary" to="/issues/edit">
           Report Issue
         </Link>
       </div>
       <div className="table-responsive">
-        <DataTable
-          columns={columns}
-          dataSource={issues}
-        />
+        <DataTable columns={columns} dataSource={issues} />
       </div>
     </>
   );
