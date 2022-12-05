@@ -19,9 +19,7 @@ function NavMenu() {
               height="30"
               alt=""
             />
-            <h5 className="d-inline-block">
-              IssueTracker
-            </h5>
+            <h5 className="d-inline-block">IssueTracker</h5>
           </a>
           <button title="Navigation menu" className="navbar-toggler">
             <span className="navbar-toggler-icon"></span>
@@ -29,23 +27,48 @@ function NavMenu() {
         </div>
       </div>
       <div className="@NavMenuCssClass">
-        <nav className="flex-column">
-          <div className="nav-item px-3">
-            <Link className="nav-link" to="/">
-              <span className="bi bi-speedometer2" aria-hidden="true"></span> Dashboard
+        <ul className="flex-column px-2">
+          <li className="nav-item">
+            <Link className="nav-link" to="/" reloadDocument>
+              <span className="bi bi-speedometer2" aria-hidden="true"></span>{" "}
+              Dashboard
             </Link>
-          </div>
-          <div className="nav-item px-3">
-            <Link className="nav-link" to="/projects">
-              <span className="bi bi-folder" aria-hidden="true"></span> My Projects
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/projects" reloadDocument>
+              <span className="bi bi-folder" aria-hidden="true"></span> Projects
             </Link>
-          </div>
-          <div className="nav-item px-3">
-            <Link className="nav-link" to="/issues">
-              <span className="bi bi-exclamation-circle" aria-hidden="true"></span> Issues
+          </li>
+          <li className="nav-item has-submenu">
+            <Link className="nav-link" to="/issues" reloadDocument>
+              <span
+                className="bi bi-exclamation-circle"
+                aria-hidden="true"
+              ></span>{" "}
+              Issues
             </Link>
-          </div>
-        </nav>
+            <ul className="">
+              <li className="">
+                <Link
+                  className="nav-link"
+                  to={`/issues?assignedTo=${user?.id}`}
+                  reloadDocument
+                >
+                  Assigned to me
+                </Link>
+              </li>
+              <li className="">
+                <Link
+                  className="nav-link"
+                  to={`/issues?reportedBy=${user?.id}`}
+                  reloadDocument
+                >
+                  Reported by me
+                </Link>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </div>
     </>
   );
