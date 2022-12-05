@@ -10,6 +10,8 @@ import Projects from "pages/Projects";
 import IssueEditor from "pages/IssueEditor";
 import ProjectEditor from "pages/ProjectEditor";
 
+import IssueView from "pages/IssueView";
+
 import SignIn from "pages/SignIn";
 import SignUp from "pages/SignUp";
 
@@ -28,10 +30,11 @@ function AppRoutes() {
       <Route exact path="/" element={<Layout />}>
         <Route index path="" element={<PrivateRoute><Home /></PrivateRoute>} />
         <Route path="issues" element={<PrivateRoute><Issues /></PrivateRoute>} />
-        <Route path="projects" element={<PrivateRoute><Projects /></PrivateRoute>} />
+        <Route path="issues/:issueId" element={<PrivateRoute><IssueView /></PrivateRoute>} />
         <Route path="issues/edit" element={<PrivateRoute><IssueEditor /></PrivateRoute>} />
         <Route path="issues/edit/:issueId" element={<PrivateRoute><IssueEditor /></PrivateRoute>} />
-        <Route path="projects" element={<PrivateRoute><ProjectEditor /></PrivateRoute>} />
+        <Route path="projects" element={<PrivateRoute><Projects /></PrivateRoute>} />
+        <Route path="projects/edit" element={<PrivateRoute><ProjectEditor /></PrivateRoute>} />
       </Route>
       <Route path="/account">
         <Route path="signin" element={<SignIn />} />
