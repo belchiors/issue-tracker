@@ -23,25 +23,17 @@ function IssueEditor() {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
-    await api
-      .post("/api/issues", formData)
+    const response = formData.id
+      ? api.put("/api/issues", formData)
+      : api.post("/api/issues", formData);
+
+    response
       .then((response) => {
         navigate("/issues");
       })
       .catch((error) => {
         if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-
-          // Set errors for response errors, usually reponse errors are unique and
-          // does not occur at the same time as validation errors, so there is no reason
-          // to append here.
           setErrors([error.response.data]);
-
-          // Validation errors are stored in an errors object that is null when
-          // no validation errors are returned from the server. A validation errors
-          // can occur for one or more fields each with possible more than one error.
           const validationErrors = error.response.data.errors;
           if (validationErrors != null) {
             const fieldErrors = [];
@@ -54,6 +46,13 @@ function IssueEditor() {
           alert(error.message);
         }
       });
+  };
+
+  const handleDelete = async (issueId) => {
+    if (window.confirm("Delete issue? This action cannot be undone.")) {
+      const response = await api.delete(`api/issues/${issueId}`);
+      window.location.reload(true);
+    }
   };
 
   const handleChange = (event) => {
@@ -72,21 +71,19 @@ function IssueEditor() {
     const data = response.data;
     setMembers(data);
   };
-  
+
   const fetchIssue = async (issueId) => {
-    const response = await api.get(`api/issues/${issueId}`)
+    const response = await api.get(`api/issues/${issueId}`);
     const data = response.data;
-    console.log(data);
     setFormData(data);
-  }
+  };
 
   useEffect(() => {
     fetchProjects();
     fetchMembers();
-    
+
     // Fetch and populate formData for editor mode
-    if (issueId != null)
-      fetchIssue(issueId);
+    if (issueId != null) fetchIssue(issueId);
   }, []);
 
   return (
@@ -103,9 +100,7 @@ function IssueEditor() {
       )}
       <form onSubmit={onSubmit}>
         <div className="form-group">
-          <label className="col-form-label">
-            Sumary
-          </label>
+          <label className="col-form-label">Sumary</label>
           <input
             type="text"
             className="form-control"
@@ -116,9 +111,7 @@ function IssueEditor() {
           />
         </div>
         <div className="form-group">
-          <label className="col-form-label">
-            Description
-          </label>
+          <label className="col-form-label">Description</label>
           <textarea
             className="form-control"
             rows="10"
@@ -132,9 +125,7 @@ function IssueEditor() {
           <Restricted to={"Admin"}>
             <div className="form-group">
               <div className="group-label">
-                <label className="col-form-label">
-                  Priority
-                </label>
+                <label className="col-form-label">Priority</label>
               </div>
               <div className="form-check form-check-inline">
                 <input
@@ -145,9 +136,7 @@ function IssueEditor() {
                   checked={formData.priority === "0"}
                   onChange={handleChange}
                 />
-                <label className="form-check-label">
-                  None
-                </label>
+                <label className="form-check-label">None</label>
               </div>
               <div className="form-check form-check-inline">
                 <input
@@ -158,9 +147,7 @@ function IssueEditor() {
                   checked={formData.priority === "1"}
                   onChange={handleChange}
                 />
-                <label className="form-check-label">
-                  Normal
-                </label>
+                <label className="form-check-label">Normal</label>
               </div>
               <div className="form-check form-check-inline">
                 <input
@@ -171,9 +158,7 @@ function IssueEditor() {
                   checked={formData.priority === "2"}
                   onChange={handleChange}
                 />
-                <label className="form-check-label">
-                  Critical
-                </label>
+                <label className="form-check-label">Critical</label>
               </div>
               <div className="form-check form-check-inline">
                 <input
@@ -184,15 +169,11 @@ function IssueEditor() {
                   checked={formData.priority === "3"}
                   onChange={handleChange}
                 />
-                <label className="form-check-label">
-                  Major
-                </label>
+                <label className="form-check-label">Major</label>
               </div>
             </div>
             <div className="form-group">
-              <label className="col-form-label">
-                Assign Member
-              </label>
+              <label className="col-form-label">Assign Member</label>
               <select
                 className="form-select"
                 value={formData.assigneeId}
@@ -206,11 +187,49 @@ function IssueEditor() {
                 ))}
               </select>
             </div>
+            {formData.id ? (
+              <div className="form-group">
+                <div className="group-label">
+                  <label className="col-form-label">Status</label>
+                </div>
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="status"
+                    value="0"
+                    checked={formData.status === "0"}
+                    onChange={handleChange}
+                  />
+                  <label className="form-check-label">Open</label>
+                </div>
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="status"
+                    value="1"
+                    checked={formData.status === "1"}
+                    onChange={handleChange}
+                  />
+                  <label className="form-check-label">Fixed</label>
+                </div>
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="status"
+                    value="2"
+                    checked={formData.status === "2"}
+                    onChange={handleChange}
+                  />
+                  <label className="form-check-label">Closed</label>
+                </div>
+              </div>
+            ) : null}
           </Restricted>
           <div className="form-group">
-            <label className="col-form-label">
-              Project
-            </label>
+            <label className="col-form-label">Project</label>
             <select
               className="form-select"
               name="projectId"
@@ -220,19 +239,26 @@ function IssueEditor() {
             >
               <option value="">-- Select Project --</option>
               {projects.map((project) => (
-                <option value={project.id}>
-                  {project.name}
-                </option>
+                <option value={project.id}>{project.name}</option>
               ))}
             </select>
           </div>
         </div>
         <div className="mt-3">
-          <button
-            className="btn btn-primary"
-            type="submit">
-            Submit Issue
+          <button className="btn btn-primary" type="submit">
+            {formData.id ? "Apply changes" : "Create Issue"}
           </button>
+          {formData.id ? (
+            <Restricted to={"Admin"}>
+              <button
+                className="btn btn-secondary m-2"
+                type="button"
+                onClick={() => handleDelete(issueId)}
+              >
+                Delete
+              </button>
+            </Restricted>
+          ) : null}
         </div>
       </form>
     </div>
